@@ -6,11 +6,11 @@ import java.util.List;
 
 @Data
 public class CheckerDTO {
-    private Person driver;
+    private PersonDTO driver;
     private String busName;
     private String sideNumber;
     private String rejestrNumber;
-    private List<Person> babySitters;
+    private List<PersonDTO> babySitters;
     private int numberOfSeats;
     private Date technicalReviewDate;
     private Date liftReviewDate;

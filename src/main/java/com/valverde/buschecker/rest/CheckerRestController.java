@@ -1,7 +1,7 @@
 package com.valverde.buschecker.rest;
 
 import com.valverde.buschecker.dto.CheckerDTO;
-import com.valverde.buschecker.dto.Person;
+import com.valverde.buschecker.dto.PersonDTO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,15 +16,15 @@ public class CheckerRestController {
     public CheckerDTO getCheckerData() {
         CheckerDTO dto = new CheckerDTO();
 
-        Person driver = new Person();
+        PersonDTO driver = new PersonDTO();
         driver.setFirstname("Roman");
         driver.setLastname("Pociejowski");
         dto.setDriver(driver);
         dto.setBusName("Mercedes");
         dto.setSideNumber("1503");
 
-        List<Person> sitters = new ArrayList<>();
-        Person sitter = new Person();
+        List<PersonDTO> sitters = new ArrayList<>();
+        PersonDTO sitter = new PersonDTO();
         sitter.setFirstname("Mażena");
         sitter.setLastname("Dziczkowska");
         sitters.add(sitter);

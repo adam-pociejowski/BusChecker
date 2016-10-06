@@ -7,6 +7,7 @@ import com.valverde.buschecker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,9 @@ public class MainController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/checker")
-    public String showChecker() {
-        return "checker";
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String showLoginPage() {
+        return "index";
     }
 
     private void createTestUser() {

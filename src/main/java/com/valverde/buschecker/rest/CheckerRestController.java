@@ -1,41 +1,46 @@
 package com.valverde.buschecker.rest;
 
 import com.valverde.buschecker.dto.CheckerDTO;
-import com.valverde.buschecker.dto.PersonDTO;
+import com.valverde.buschecker.entity.BusDriver;
+import com.valverde.buschecker.entity.User;
+import com.valverde.buschecker.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class CheckerRestController {
 
-    @RequestMapping(value = "/secured/rest/checkerdata")
-    public CheckerDTO getCheckerData() {
-        CheckerDTO dto = new CheckerDTO();
+    @Autowired
+    private UserService userService;
 
-        PersonDTO driver = new PersonDTO();
-        driver.setFirstname("Roman");
-        driver.setLastname("Pociejowski");
-        dto.setDriver(driver);
-        dto.setBusName("Mercedes");
-        dto.setSideNumber("1503");
+    @RequestMapping(value = "/secured/rest/checkerdata", method = RequestMethod.POST)
+    public CheckerDTO getCheckerData(@RequestBody String username) {
+        User user = userService.getUser(username);
+        BusDriver bus = user.getBuses().get(0);
 
-        List<PersonDTO> sitters = new ArrayList<>();
-        PersonDTO sitter = new PersonDTO();
-        sitter.setFirstname("Mażena");
-        sitter.setLastname("Dziczkowska");
-        sitters.add(sitter);
-        dto.setBabySitters(sitters);
-        dto.setNumberOfSeats(23);
-        dto.setExtinguisherReviewDate(new Date());
-        dto.setInsuranceDate(new Date());
-        dto.setTechnicalReviewDate(new Date());
-        dto.setLiftReviewDate(new Date());
-        dto.setTachographReviewDate(new Date());
-        dto.setNotificationBetweenEventDays(14);
+        CheckerDTO dto = new CheckerDTO(bus, user.getNotificationBetweenEventDays());
         return dto;
+    }
+
+    @RequestMapping(value = "/secured/rest/save", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, String>> saveData(@RequestBody CheckerDTO dto) {
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            map.put("response", "ok");
+        } catch (Exception e) {
+            map.put("response", "error");
+        }
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

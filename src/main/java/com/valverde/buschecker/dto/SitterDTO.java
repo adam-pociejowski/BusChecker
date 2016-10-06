@@ -3,7 +3,7 @@ package com.valverde.buschecker.dto;
 import lombok.Data;
 
 @Data
-public class PersonDTO {
+public class SitterDTO {
     private String firstname;
     private String lastname;
 }

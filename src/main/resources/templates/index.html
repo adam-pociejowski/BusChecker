@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <link th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}" type="text/css" rel="stylesheet"/>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body ng-app="BusChecker" ng-controller="AppController">
+
+    <div ng-view="true"></div>
+
+    <script th:src="@{/js/jquery-3.1.0.min.js}" type="text/javascript"></script>
+    <script th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.js}" type="text/javascript"></script>
+
+    <script th:src="@{/angular-1.5.8/angular.js}" type="text/javascript"></script>
+    <script th:src="@{/angular-1.5.8/angular-resource.js}" type="text/javascript"></script>
+    <script th:src="@{/angular-1.5.8/angular-route.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bus_checker_app.js}" type="text/javascript"></script>
+    <script th:src="@{/js/controller/app_controller.js}" type="text/javascript"></script>
+    <script th:src="@{/js/controller/bus_checker_controller.js}" type="text/javascript"></script>
+    <script th:src="@{/js/controller/login_controller.js}" type="text/javascript"></script>
+</body>
+</html>

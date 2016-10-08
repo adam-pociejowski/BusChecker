@@ -5,12 +5,72 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
     sitters = [];
     var editingObj = null;
 
+
+    $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+    $('.datepicker').datepicker({
+        startDate: '-3d'
+    });
+
     var username = loggedUser.getUsername();
     console.log("User: "+loggedUser.getUsername());
     $http.post('/secured/rest/checkerdata', username).
     then(function(response) {
         setData(response.data);
     });
+
+    $scope.nextReview = function(obj) {
+        if (obj.label == 'Przegląd techniczny') {
+            return getFutureDate(obj.value, 12);
+        }
+        else if (obj.label == 'Przegląd windy') {
+            return getFutureDate(obj.value, 24);
+        }
+        else if (obj.label == 'Przegląd gaśnicy') {
+            return getFutureDate(obj.value, 30);
+        }
+        else if (obj.label == 'Przegląd tachografu') {
+            return getFutureDate(obj.value, 18);
+        }
+        else if (obj.label == 'Ubezpieczenie wozu') {
+            return getFutureDate(obj.value, 12);
+        }
+    };
+
+    var getFutureDate = function(date, monthsInFuture) {
+        var dateParam = date.split('/');
+        var year = parseInt(dateParam[2]) + parseInt((monthsInFuture / 12));
+        var month = parseInt(dateParam[1]);
+        if (month + (monthsInFuture % 12) > 12) {
+            month = (month + (monthsInFuture % 12)) % 12;
+            year++;
+        }
+        else {
+            month += monthsInFuture % 12;
+        }
+        var monthString = month;
+        if (month < 10) {
+            monthString = '0' + monthString;
+        }
+        var day = getCorrectDay(parseInt(dateParam[0]), month);
+        return day + '/' + monthString +'/' + year;
+    };
+
+    var getCorrectDay = function(day, month) {
+        var max = getMonthMaxDay(month);
+        if (day > max) {
+            day = max;
+        }
+        if (day < 10) {
+            return '0'+day;
+        }
+        return day;
+    };
+
+    var getMonthMaxDay = function(month) {
+        if (month == 2) return 29;
+        else if (month == 4 || month == 6 || month == 9 || month == 11) return 30;
+        else return 31;
+    };
 
     $scope.edit = function(obj) {
         $scope.modalInput = obj.value;
@@ -19,20 +79,24 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
 
 
     $scope.save = function() {
-        editingObj.value = $scope.modalInput;
+        if (editingObj != null) {
+            editingObj.value = $scope.modalInput;
+        }
+        console.log('dates', $scope.dates);
 
         var data = {
+            loggedUser : loggedUser.getUsername(),
             busName : '',
             sideNumber : '',
             rejestrNumber : '',
             firstname : '',
             lastname : '',
             umberOfSeats : 0,
-            technicalReviewDate : '',
-            liftReviewDate : '',
-            extinguisherReviewDate : '',
-            tachographReviewDate : '',
-            insuranceDate : '',
+            technicalReviewDate : null,
+            liftReviewDate : null,
+            extinguisherReviewDate : null,
+            tachographReviewDate : null,
+            insuranceDate : null,
             notificationBetweenEventDays : 0,
             sitters : []
         };
@@ -42,11 +106,11 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
         data.rejestrNumber = getObject('Nr rejestracyjny');
         data.numberOfSeats = getObject('Liczba miejsc');
         data.notificationBetweenEventDays = parseInt(getObject('Powiadomienie na telefon').split(' '));
-        data.technicalReviewDate = getObject('Przegląd techniczny');
-        data.liftReviewDate = getObject('Przegląd windy');
-        data.technicalReviewDate = getObject('Przegląd gaśnicy');
-        data.tachographReviewDate = getObject('Przegląd tachografu');
-        data.insuranceDate = getObject('Ubezpieczenie wozu');
+        data.technicalReviewDate = getDate('Przegląd techniczny');
+        data.liftReviewDate = getDate('Przegląd windy');
+        data.extinguisherReviewDate = getDate('Przegląd gaśnicy');
+        data.tachographReviewDate = getDate('Przegląd tachografu');
+        data.insuranceDate = getDate('Ubezpieczenie wozu');
         for (var k = 0; k < $scope.sitters.length; k++) {
             var sitter = $scope.sitters[k].value.split(' ');
             var sitterObj = {
@@ -62,7 +126,7 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
         };
         data.firstname = driverObj.firstname;
         data.lastname = driverObj.lastname;
-        console.log(data);
+        console.log('objectToSave', data);
 
         $http.post('/secured/rest/save', data).
         then(function(response) {
@@ -96,7 +160,7 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
     };
 
     var dateFormat = function(date) {
-        return $filter('date')(date,'dd-MM-yyyy');
+        return $filter('date')(date,'dd/MM/yyyy');
     };
 
     var createObject = function(description, val) {
@@ -106,8 +170,22 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
         };
     };
 
+    var getDate = function(key) {
+        for (var j = 0; j < $scope.dates.length; j++) {
+            var o = $scope.dates[j];
+            if (o.label === key) {
+                if (o.value !== null || o.value !== '') {
+                    var dateArray = o.value.split('/');
+                    var date = dateArray[2]+'-'+dateArray[1]+'-'+dateArray[0];
+                    return new Date(date);
+                }
+            }
+        }
+        return null;
+    };
+
     var getObject = function(key) {
-        var list = $scope.infos.concat($scope.dates.concat($scope.sitters));
+        var list = $scope.infos.concat($scope.sitters);
 
         for (var j = 0; j < list.length; j++) {
             var o = list[j];

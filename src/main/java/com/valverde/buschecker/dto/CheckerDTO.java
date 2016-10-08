@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class CheckerDTO {
+    private String loggedUser;
     private String busName;
     private String sideNumber;
     private String rejestrNumber;
@@ -37,7 +38,7 @@ public class CheckerDTO {
         this.liftReviewDate = bus.getLiftReviewDate();
         this.extinguisherReviewDate = bus.getExtinguisherReviewDate();
         this.tachographReviewDate = bus.getTachographReviewDate();
-        this.insuranceDate = bus.getExtinguisherReviewDate();
+        this.insuranceDate = bus.getInsuranceDate();
         this.notificationBetweenEventDays = notificationBetweenEventDays;
         sitters = new ArrayList<>();
         for (Sitter sitter : bus.getSitters()) {

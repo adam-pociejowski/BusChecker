@@ -4,6 +4,10 @@ busApp.controller('RegisterController', function($scope, $http, $location) {
     $scope.sitters = [];
     $scope.acc = {};
 
+    $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+    $('.datepicker').datepicker({
+        startDate: '-3d'
+    });
 
     $scope.addSitter = function() {
         console.log('add');
@@ -17,6 +21,7 @@ busApp.controller('RegisterController', function($scope, $http, $location) {
     $scope.register = function() {
         console.log($scope.acc);
         console.log($scope.sitters);
+        console.log($scope.acc.numberOfSeats);
         var data = {
             username : getValue($scope.acc.username),
             password : getValue($scope.acc.password),
@@ -25,7 +30,7 @@ busApp.controller('RegisterController', function($scope, $http, $location) {
             rejestrNumber : getValue($scope.acc.rejestrNumber),
             firstname : getValue($scope.acc.firstname),
             lastname : getValue($scope.acc.lastname),
-            numberOfSeats : getValue($scope.acc.numberOfSeats),
+            numberOfSeats : parseInt($scope.acc.numberOfSeats),
             technicalReviewDate : getValue($scope.acc.technicalReviewDate),
             liftReviewDate : getValue($scope.acc.liftReviewDate),
             extinguisherReviewDate : getValue($scope.acc.extinguisherReviewDate),

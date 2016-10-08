@@ -4,6 +4,9 @@ var busApp = angular.module('BusChecker', ['ngResource', 'ngRoute'])
         $routeProvider.when('/login', {
             templateUrl : 'login.html',
             controller : 'LoginController'
+        }).when('/register', {
+            templateUrl : 'register.html',
+            controller : 'RegisterController'
         }).when('/checker', {
             templateUrl : 'checker.html',
             controller : 'CheckerController'

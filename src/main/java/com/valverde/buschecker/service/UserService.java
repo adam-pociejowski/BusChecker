@@ -16,4 +16,14 @@ public class UserService {
     public User getUser(String username) {
         return userRepository.findByUsername(username);
     }
+
+    @Transactional
+    public boolean saveUser(User user) {
+        try {
+            userRepository.save(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

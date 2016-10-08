@@ -1,8 +1,13 @@
 
 busApp.controller('LoginController', function($scope, $http, $location, loggedUser) {
-    console.log('LoginController ');
+    console.log('LoginController 2');
 
     $scope.credentials = {};
+    $scope.create = function() {
+        console.log('Create');
+        $location.path('/register');
+    };
+
     $scope.login = function() {
         console.log($scope.credentials);
         $http.post('/authenticate', $scope.credentials).

@@ -1,22 +1,29 @@
-<div class="row col-md-2 col-md-offset-5 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3" style="margin-top: 100px;"
-     xmlns:th="http://www.w3.org/1999/xhtml">
-
+<div class="row col-md-3 col-md-offset-4 col-sm-4 col-sd-offset-4 col-xs-6 col-xs-offset-3 centered" style="margin-top: 100px;">
     <div class="alert alert-danger" ng-show="error">
         Problem z logowaniem. Spróbuj ponownie.
     </div>
 
-    <form ng-submit="login()">
-        <div class="form-group">
-            <label for="username">Nazwa użytkownika</label>
-            <input ng-model="credentials.username" type="text"
-                   class="form-control" id="username" placeholder="Nazwa użytkownika"/>
+    <div class="panel panel-default">
+        <div class="panel-heading">Logowanie</div>
+        <div class="panel-body">
+            <form ng-submit="login()">
+                <div class="form-group">
+                    <label for="username">Nazwa użytkownika</label>
+                    <input ng-model="credentials.username" type="text"
+                           class="form-control" id="username" placeholder="Nazwa użytkownika"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">Hasło</label>
+                    <input ng-model="credentials.password" type="password"
+                           class="form-control" id="password" placeholder="Hasło"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Zaloguj</button>
+            </form>
+
+            <form ng-submit="create()" style="margin-top: 50px;float: right;">
+                <div>Nie masz jeszcze konta?</div>
+                <button type="submit" style="margin-top: 10px;float: right;" class="btn btn-primary">Załóż konto</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="password">Hasło</label>
-            <input ng-model="credentials.password" type="password"
-                   class="form-control" id="password" placeholder="Hasło"/>
-        </div>
-        <button type="submit" class="btn btn-primary">Zaloguj</button>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form>
+    </div>
 </div>

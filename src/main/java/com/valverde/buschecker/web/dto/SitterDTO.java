@@ -1,4 +1,4 @@
-package com.valverde.buschecker.dto;
+package com.valverde.buschecker.web.dto;
 
 import lombok.Data;
 

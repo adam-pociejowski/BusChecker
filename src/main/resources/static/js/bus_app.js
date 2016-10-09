@@ -18,6 +18,7 @@ var busApp = angular.module('BusChecker', ['ngResource', 'ngRoute'])
     })
     .service('loggedUser', function() {
         var username = '';
+        var roles = [];
 
         return {
             getUsername: function () {
@@ -25,6 +26,12 @@ var busApp = angular.module('BusChecker', ['ngResource', 'ngRoute'])
             },
             setUsername: function(value) {
                 username = value;
+            },
+            getRoles: function() {
+                return roles;
+            },
+            setRoles: function(value) {
+                roles = value;
             }
         };
     });

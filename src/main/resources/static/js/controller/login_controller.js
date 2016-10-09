@@ -1,6 +1,5 @@
 
 busApp.controller('LoginController', function($scope, $http, $location, loggedUser) {
-    console.log('LoginController 2');
 
     $scope.credentials = {};
     $scope.create = function() {
@@ -9,16 +8,16 @@ busApp.controller('LoginController', function($scope, $http, $location, loggedUs
     };
 
     $scope.login = function() {
-        console.log($scope.credentials);
         $http.post('/authenticate', $scope.credentials).
         then(function(response) {
             if (response.data.username) {
-                console.log("Logged username: "+response.data.username);
+                console.log("Logged username: "+response.data.username,'\nRoles: '+response.data.role);
                 loggedUser.setUsername(response.data.username);
+                loggedUser.setRoles(response.data.role);
                 $location.path('/checker');
             }
             else {
-                console.log("Login error");
+                $location.path('/login');
             }
         });
     };

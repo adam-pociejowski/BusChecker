@@ -1,6 +1,6 @@
 package com.valverde.buschecker.util;
 
-import com.valverde.buschecker.dto.SitterDTO;
+import com.valverde.buschecker.web.dto.SitterDTO;
 import com.valverde.buschecker.entity.BusDriver;
 import com.valverde.buschecker.entity.Sitter;
 

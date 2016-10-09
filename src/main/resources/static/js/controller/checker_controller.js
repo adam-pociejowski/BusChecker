@@ -1,9 +1,10 @@
 
-busApp.controller('CheckerController', function($scope, $http, $filter, loggedUser) {
+busApp.controller('CheckerController', function($scope, $http, $filter, $location, loggedUser) {
     dates = [];
     infos = [];
     sitters = [];
     var editingObj = null;
+    $scope.loggedUser = {};
 
 
     $.fn.datepicker.defaults.format = "dd/mm/yyyy";
@@ -11,12 +12,28 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
         startDate: '-3d'
     });
 
-    var username = loggedUser.getUsername();
-    console.log("User: "+loggedUser.getUsername());
-    $http.post('/secured/rest/checkerdata', username).
-    then(function(response) {
-        setData(response.data);
+
+    $scope.$on('$routeChangeSuccess', function() {
+        $http.get('/loggeduser').then(function(response) {
+            if (response.data.username) {
+                loggedUser.setUsername(response.data.username);
+                loggedUser.setRoles(response.data.role);
+                $scope.loggedUser.username = loggedUser.getUsername();
+                var username = loggedUser.getUsername();
+                if (username) {
+                    $http.post('/secured/rest/checkerdata', username).
+                    then(function(resp) {
+                        setData(resp.data);
+                    });
+                }
+            }
+            else {
+                $location.path('/login');
+            }
+        });
     });
+
+
 
     $scope.nextReview = function(obj) {
         if (obj.label == 'Przegląd techniczny') {
@@ -82,7 +99,6 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
         if (editingObj != null) {
             editingObj.value = $scope.modalInput;
         }
-        console.log('dates', $scope.dates);
 
         var data = {
             loggedUser : loggedUser.getUsername(),
@@ -126,13 +142,9 @@ busApp.controller('CheckerController', function($scope, $http, $filter, loggedUs
         };
         data.firstname = driverObj.firstname;
         data.lastname = driverObj.lastname;
-        console.log('objectToSave', data);
 
         $http.post('/secured/rest/save', data).
-        then(function(response) {
-            console.log(response.data);
-        });
-
+        then(function(response) {});
     };
 
     var setData = function(responseData) {

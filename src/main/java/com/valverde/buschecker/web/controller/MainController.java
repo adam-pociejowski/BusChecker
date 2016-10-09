@@ -1,14 +1,15 @@
-package com.valverde.buschecker.controller;
+package com.valverde.buschecker.web.controller;
+
 
 import com.valverde.buschecker.entity.BusDriver;
 import com.valverde.buschecker.entity.Sitter;
 import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.repository.UserRepository;
+import com.valverde.buschecker.twilio.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class MainController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String showLoginPage() {
+        new Client().sendMessage("48503132355", "test message");
         return "index";
     }
 

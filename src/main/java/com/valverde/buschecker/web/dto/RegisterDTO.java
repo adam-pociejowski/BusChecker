@@ -12,6 +12,7 @@ public class RegisterDTO {
     private String rejestrNumber;
     private String firstname;
     private String lastname;
+    private String phoneNumber;
     private int numberOfSeats;
     private String technicalReviewDate;
     private String liftReviewDate;

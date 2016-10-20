@@ -1,5 +1,6 @@
 
 busApp.controller('AppController', function($scope, $http, $location, loggedUser) {
+    $scope.loggedUser = {};
 
     // $scope.$on('$routeChangeSuccess', function() {
     //     $http.get('/loggeduser').then(function(response) {
@@ -16,13 +17,17 @@ busApp.controller('AppController', function($scope, $http, $location, loggedUser
     //     });
     // });
 
+    $scope.isLogged = function() {
+        return loggedUser.hasRole();
+    };
+
 
     $scope.logout = function() {
-        $http.get('/logout')
+        $http.get('logout')
             .then(function() {
                 loggedUser.setUsername(null);
                 loggedUser.setRoles(null);
-                $location.path('/login');
+                $location.path('login');
         });
     };
 });

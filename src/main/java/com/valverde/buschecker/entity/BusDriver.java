@@ -24,6 +24,8 @@ public class BusDriver {
 
     private String sideNumber;
 
+    private String phoneNumber;
+
     private String rejestrNumber;
 
     private int numberOfSeats;

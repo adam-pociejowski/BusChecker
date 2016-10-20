@@ -1,6 +1,5 @@
 
 busApp.controller('RegisterController', function($scope, $http, $location) {
-    console.log('RegisterController');
     $scope.sitters = [];
     $scope.acc = {};
 
@@ -10,7 +9,6 @@ busApp.controller('RegisterController', function($scope, $http, $location) {
     });
 
     $scope.addSitter = function() {
-        console.log('add');
         var sitter = {
             firstname : '',
             lastname : ''
@@ -19,9 +17,6 @@ busApp.controller('RegisterController', function($scope, $http, $location) {
     };
 
     $scope.register = function() {
-        console.log($scope.acc);
-        console.log($scope.sitters);
-        console.log($scope.acc.numberOfSeats);
         var data = {
             username : getValue($scope.acc.username),
             password : getValue($scope.acc.password),
@@ -30,6 +25,7 @@ busApp.controller('RegisterController', function($scope, $http, $location) {
             rejestrNumber : getValue($scope.acc.rejestrNumber),
             firstname : getValue($scope.acc.firstname),
             lastname : getValue($scope.acc.lastname),
+            phoneNumber : getValue($scope.acc.phoneNumber)+"",
             numberOfSeats : parseInt($scope.acc.numberOfSeats),
             technicalReviewDate : getValue($scope.acc.technicalReviewDate),
             liftReviewDate : getValue($scope.acc.liftReviewDate),
@@ -40,10 +36,10 @@ busApp.controller('RegisterController', function($scope, $http, $location) {
             sitters : $scope.sitters
         };
 
-        console.log(data);
-        $http.post('/registerUser', data).
-        then(function(response) {
-            $location.path("/login");
+        // console.log(data);
+        $http.post('registerUser', data).
+        then(function() {
+            $location.path("login");
         });
     };
 

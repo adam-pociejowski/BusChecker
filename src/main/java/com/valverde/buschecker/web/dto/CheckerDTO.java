@@ -15,6 +15,7 @@ public class CheckerDTO {
     private String sideNumber;
     private String rejestrNumber;
     private String firstname;
+    private String phoneNumber;
     private String lastname;
     private int numberOfSeats;
     private Date technicalReviewDate;
@@ -34,6 +35,7 @@ public class CheckerDTO {
         this.firstname = bus.getFirstname();
         this.lastname = bus.getLastname();
         this.numberOfSeats = bus.getNumberOfSeats();
+        this.phoneNumber = bus.getPhoneNumber();
         this.technicalReviewDate = bus.getTechnicalReviewDate();
         this.liftReviewDate = bus.getLiftReviewDate();
         this.extinguisherReviewDate = bus.getExtinguisherReviewDate();

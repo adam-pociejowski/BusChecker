@@ -4,20 +4,20 @@ busApp.controller('LoginController', function($scope, $http, $location, loggedUs
     $scope.credentials = {};
     $scope.create = function() {
         console.log('Create');
-        $location.path('/register');
+        $location.path('register');
     };
 
     $scope.login = function() {
-        $http.post('/authenticate', $scope.credentials).
+        $http.post('authenticate', $scope.credentials).
         then(function(response) {
             if (response.data.username) {
                 console.log("Logged username: "+response.data.username,'\nRoles: '+response.data.role);
                 loggedUser.setUsername(response.data.username);
                 loggedUser.setRoles(response.data.role);
-                $location.path('/checker');
+                $location.path('checker');
             }
             else {
-                $location.path('/login');
+                $location.path('login');
             }
         });
     };

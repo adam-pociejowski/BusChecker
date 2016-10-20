@@ -1,0 +1,36 @@
+
+body {
+    margin: 0 !important;
+    padding: 0;
+    background-image: url(../img/background2.jpg);
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: top center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed;
+}
+
+.checker-panel {
+    background: white;
+    opacity: 0.93;
+}
+
+.checker-panel-header {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.checker-header {
+    margin-bottom: 40px;
+    margin-top: 80px;
+}
+
+.checker-driver {
+    color: #2aabd2;
+    font-size: 30px;
+    font-weight: 900;
+}

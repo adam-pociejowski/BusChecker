@@ -1,15 +1,15 @@
-package com.valverde.buschecker.twilio;
+package com.valverde.buschecker.notification;
 
 
 import com.twilio.http.TwilioRestClient;
 
-public class Client {
-    private TwilioCredentials credentials;
-    private TwilioMessageCreator messageCreator;
+public class SmsClient {
+    private SmsCredentials credentials;
+    private SmsCreator messageCreator;
 
-    public Client() {
-        this.credentials = new TwilioCredentials();
-        this.messageCreator = new TwilioMessageCreator(
+    public SmsClient() {
+        this.credentials = new SmsCredentials();
+        this.messageCreator = new SmsCreator(
                 new TwilioRestClient.Builder(credentials.getAccountSid(), credentials.getAuthToken()).build()
         );
     }

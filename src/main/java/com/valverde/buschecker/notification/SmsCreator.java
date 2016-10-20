@@ -1,4 +1,4 @@
-package com.valverde.buschecker.twilio;
+package com.valverde.buschecker.notification;
 
 
 import com.twilio.http.TwilioRestClient;
@@ -6,11 +6,11 @@ import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;
 
-public class TwilioMessageCreator {
+public class SmsCreator {
 
     private final TwilioRestClient client;
 
-    public TwilioMessageCreator(TwilioRestClient client) {
+    public SmsCreator(TwilioRestClient client) {
         this.client = client;
     }
 
@@ -23,4 +23,3 @@ public class TwilioMessageCreator {
         return messageCreator.create(this.client);
     }
 }
-

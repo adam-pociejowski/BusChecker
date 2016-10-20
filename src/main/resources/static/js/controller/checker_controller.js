@@ -3,8 +3,7 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
     dates = [];
     infos = [];
     sitters = [];
-    var editingObj = null;
-    $scope.loggedUser = {};
+    $scope.editingObj = null;
 
 
     $.fn.datepicker.defaults.format = "dd/mm/yyyy";
@@ -14,14 +13,14 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
 
 
     $scope.$on('$routeChangeSuccess', function() {
-        $http.get('/loggeduser').then(function(response) {
+        $http.get('loggeduser').then(function(response) {
             if (response.data.username) {
                 loggedUser.setUsername(response.data.username);
                 loggedUser.setRoles(response.data.role);
                 $scope.loggedUser.username = loggedUser.getUsername();
                 var username = loggedUser.getUsername();
                 if (username) {
-                    $http.post('/secured/rest/checkerdata', username).
+                    $http.post('secured/rest/checkerdata', username).
                     then(function(resp) {
                         setData(resp.data);
                     });
@@ -37,16 +36,16 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
 
     $scope.nextReview = function(obj) {
         if (obj.label == 'Przegląd techniczny') {
-            return getFutureDate(obj.value, 12);
+            return getFutureDate(obj.value, 6);
         }
         else if (obj.label == 'Przegląd windy') {
             return getFutureDate(obj.value, 24);
         }
         else if (obj.label == 'Przegląd gaśnicy') {
-            return getFutureDate(obj.value, 30);
+            return getFutureDate(obj.value, 12);
         }
         else if (obj.label == 'Przegląd tachografu') {
-            return getFutureDate(obj.value, 18);
+            return getFutureDate(obj.value, 24);
         }
         else if (obj.label == 'Ubezpieczenie wozu') {
             return getFutureDate(obj.value, 12);
@@ -54,22 +53,25 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
     };
 
     var getFutureDate = function(date, monthsInFuture) {
-        var dateParam = date.split('/');
-        var year = parseInt(dateParam[2]) + parseInt((monthsInFuture / 12));
-        var month = parseInt(dateParam[1]);
-        if (month + (monthsInFuture % 12) > 12) {
-            month = (month + (monthsInFuture % 12)) % 12;
-            year++;
+        if (date) {
+            var dateParam = date.split('/');
+            var year = parseInt(dateParam[2]) + parseInt((monthsInFuture / 12));
+            var month = parseInt(dateParam[1]);
+            if (month + (monthsInFuture % 12) > 12) {
+                month = (month + (monthsInFuture % 12)) % 12;
+                year++;
+            }
+            else {
+                month += monthsInFuture % 12;
+            }
+            var monthString = month;
+            if (month < 10) {
+                monthString = '0' + monthString;
+            }
+            var day = getCorrectDay(parseInt(dateParam[0]), month);
+            return day + '/' + monthString +'/' + year;
         }
-        else {
-            month += monthsInFuture % 12;
-        }
-        var monthString = month;
-        if (month < 10) {
-            monthString = '0' + monthString;
-        }
-        var day = getCorrectDay(parseInt(dateParam[0]), month);
-        return day + '/' + monthString +'/' + year;
+        return '';
     };
 
     var getCorrectDay = function(day, month) {
@@ -91,13 +93,13 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
 
     $scope.edit = function(obj) {
         $scope.modalInput = obj.value;
-        editingObj = obj;
+        $scope.editingObj = obj;
     };
 
 
     $scope.save = function() {
-        if (editingObj != null) {
-            editingObj.value = $scope.modalInput;
+        if ($scope.editingObj != null) {
+            $scope.editingObj.value = $scope.modalInput;
         }
 
         var data = {
@@ -105,6 +107,7 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
             busName : '',
             sideNumber : '',
             rejestrNumber : '',
+            phoneNumber : '',
             firstname : '',
             lastname : '',
             umberOfSeats : 0,
@@ -121,7 +124,8 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
         data.sideNumber = getObject('Nr boczny');
         data.rejestrNumber = getObject('Nr rejestracyjny');
         data.numberOfSeats = getObject('Liczba miejsc');
-        data.notificationBetweenEventDays = parseInt(getObject('Powiadomienie na telefon').split(' '));
+        data.phoneNumber = getObject('Numer telefonu');
+        data.notificationBetweenEventDays = parseInt(getObject('Powiadomienie na telefon (dni)'));
         data.technicalReviewDate = getDate('Przegląd techniczny');
         data.liftReviewDate = getDate('Przegląd windy');
         data.extinguisherReviewDate = getDate('Przegląd gaśnicy');
@@ -143,7 +147,7 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
         data.firstname = driverObj.firstname;
         data.lastname = driverObj.lastname;
 
-        $http.post('/secured/rest/save', data).
+        $http.post('secured/rest/save', data).
         then(function(response) {});
     };
 
@@ -157,10 +161,11 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
         $scope.sitters = sitters;
 
         infos.push(createObject('Bus', responseData.busName));
+        infos.push(createObject('Numer telefonu', responseData.phoneNumber));
         infos.push(createObject('Nr boczny', responseData.sideNumber));
         infos.push(createObject('Nr rejestracyjny', responseData.rejestrNumber));
         infos.push(createObject('Liczba miejsc', responseData.numberOfSeats));
-        infos.push(createObject('Powiadomienie na telefon', responseData.notificationBetweenEventDays+' dni wcześniej'));
+        infos.push(createObject('Powiadomienie na telefon (dni)', responseData.notificationBetweenEventDays));
         $scope.infos = infos;
 
         dates.push(createObject('Przegląd techniczny', dateFormat(responseData.technicalReviewDate)));
@@ -186,7 +191,7 @@ busApp.controller('CheckerController', function($scope, $http, $filter, $locatio
         for (var j = 0; j < $scope.dates.length; j++) {
             var o = $scope.dates[j];
             if (o.label === key) {
-                if (o.value !== null || o.value !== '') {
+                if (o.value != null && o.value != '') {
                     var dateArray = o.value.split('/');
                     var date = dateArray[2]+'-'+dateArray[1]+'-'+dateArray[0];
                     return new Date(date);

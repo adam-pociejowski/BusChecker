@@ -1,9 +1,9 @@
-package com.valverde.buschecker.twilio;
+package com.valverde.buschecker.notification;
 
 import lombok.Data;
 
 @Data
-public class TwilioCredentials {
+public class SmsCredentials {
 
     private String accountSid = "AC7048af5c7df8cd4ab44034bab303373a";
 

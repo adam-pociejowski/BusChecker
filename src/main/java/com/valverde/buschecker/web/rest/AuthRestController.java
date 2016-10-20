@@ -79,46 +79,4 @@ public class AuthRestController {
         }
         return null;
     }
-
-    @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterDTO dto) {
-        User registeredUser = getUserFromRegisterDTO(dto);
-        Boolean success = userService.saveUser(registeredUser);
-        if (success) {
-            System.out.println("success");
-
-        }
-        else {
-            System.out.println("fail");
-        }
-        return null;
-    }
-
-    private User getUserFromRegisterDTO(RegisterDTO dto) {
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
-        user.setNotificationBetweenEventDays(dto.getNotificationBetweenEventDays());
-
-        BusDriver busDriver = new BusDriver();
-        busDriver.setFirstname(dto.getFirstname());
-        busDriver.setLastname(dto.getLastname());
-        busDriver.setSideNumber(dto.getSideNumber());
-        busDriver.setBusName(dto.getBusName());
-        busDriver.setRejestrNumber(dto.getRejestrNumber());
-        busDriver.setNumberOfSeats(dto.getNumberOfSeats());
-        busDriver.setExtinguisherReviewDate(DateUtils.stringToDate(dto.getExtinguisherReviewDate(), "dd/MM/yyyy"));
-        busDriver.setInsuranceDate(DateUtils.stringToDate(dto.getInsuranceDate(), "dd/MM/yyyy"));
-        busDriver.setTechnicalReviewDate(DateUtils.stringToDate(dto.getTechnicalReviewDate(), "dd/MM/yyyy"));
-        busDriver.setTachographReviewDate(DateUtils.stringToDate(dto.getTachographReviewDate(), "dd/MM/yyyy"));
-        busDriver.setLiftReviewDate(DateUtils.stringToDate(dto.getLiftReviewDate(), "dd/MM/yyyy"));
-
-        List<Sitter> sitters = new ArrayList<>();
-        busDriver.setSitters(UserUtils.sitterDTOToEntity(sitters, dto.getSitters(), busDriver));
-
-        List<BusDriver> busses = new ArrayList<>();
-        busses.add(busDriver);
-        user.setBuses(busses);
-        return user;
-    }
 }

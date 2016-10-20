@@ -51,6 +51,7 @@ public class CheckerRestController {
         busDriver.setLastname(dto.getLastname());
         busDriver.setSideNumber(dto.getSideNumber());
         busDriver.setBusName(dto.getBusName());
+        busDriver.setPhoneNumber(dto.getPhoneNumber());
         busDriver.setRejestrNumber(dto.getRejestrNumber());
         busDriver.setNumberOfSeats(dto.getNumberOfSeats());
         busDriver.setExtinguisherReviewDate(dto.getExtinguisherReviewDate());

@@ -3,10 +3,32 @@
 <head>
     <link th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.css}" type="text/css" rel="stylesheet"/>
     <link th:href="@{/bootstrap-datepicker-dist/css/bootstrap-datepicker.css}" type="text/css" rel="stylesheet"/>
+    <link th:href="@{/css/index_style.css}" type="text/css" rel="stylesheet"/>
     <meta charset="UTF-8"/>
     <title>BusChecker</title>
 </head>
 <body ng-app="BusChecker" ng-controller="AppController">
+
+    <div ng-if="isLogged()">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">Bus Checker</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a th:href="@{/checker}">Info</a></li>
+                    </ul>
+
+                    <form class="navbar-form navbar-right">
+                        <button ng-click="logout()" type="submit" class="btn btn-primary">Wyloguj się</button>
+                    </form>
+                    <p class="navbar-text navbar-right">Zalogowany jako: {{loggedUser.username}}</p>
+                </div>
+            </div>
+        </nav>
+    </div>
 
     <div ng-view="true"></div>
 

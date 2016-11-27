@@ -8,19 +8,19 @@ import java.util.List;
 @Table(name = "users")
 @Data
 public class User {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq_gen")
+    @SequenceGenerator(name = "users_seq_gen", sequenceName = "users_id_seq")
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
     private String password;
 
-    private Integer notificationBetweenEventDays;
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name="user2driver", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="driver_id"))
+    private List<Driver> drivers;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user2bus",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "bus_id"))
-    private List<BusDriver> buses;
 }

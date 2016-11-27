@@ -1,26 +1,19 @@
+'use strict';
 
-busApp.controller('AppController', function($scope, $http, $location, loggedUser) {
+var appController = busApp.controller('AppController', function($rootScope, $scope, $http, $location, loggedUser) {
+    $scope.alerts = [];
     $scope.loggedUser = {};
 
-    // $scope.$on('$routeChangeSuccess', function() {
-    //     $http.get('/loggeduser').then(function(response) {
-    //         console.log('changed',response.data);
-    //         if (response.data.username) {
-    //             console.log('changed logged');
-    //             loggedUser.setUsername(response.data.username);
-    //             loggedUser.setRoles(response.data.role);
-    //         }
-    //         else {
-    //             console.log('changed not logged');
-    //             $location.path('/login');
-    //         }
-    //     });
-    // });
+    $scope.getLoggedUser = function () {
+        $http.get('loggedUser')
+            .then(function(response) {
+                console.log(response.data);
+            });
+    };
 
     $scope.isLogged = function() {
         return loggedUser.hasRole();
     };
-
 
     $scope.logout = function() {
         $http.get('logout')
@@ -29,5 +22,17 @@ busApp.controller('AppController', function($scope, $http, $location, loggedUser
                 loggedUser.setRoles(null);
                 $location.path('login');
         });
+    };
+
+    $scope.addErrorAlert = function(message) {
+        console.log('added');
+        $scope.alerts.push({
+            type: error,
+            msg: message
+        });
+    };
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
     };
 });

@@ -1,5 +1,5 @@
 
-var busApp = angular.module('BusChecker', ['ngResource', 'ngRoute'])
+var busApp = angular.module('BusChecker', ['ngAnimate', 'ui.bootstrap', 'ngResource', 'ngRoute'])
     .config(function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {
             templateUrl : 'login.html',
@@ -7,9 +7,9 @@ var busApp = angular.module('BusChecker', ['ngResource', 'ngRoute'])
         }).when('/register', {
             templateUrl : 'register.html',
             controller : 'RegisterController'
-        }).when('/checker', {
-            templateUrl : 'checker.html',
-            controller : 'CheckerController'
+        }).when('/manage_user/:username', {
+            templateUrl : 'manage_user.html',
+            controller : 'ManageUserController'
         }).otherwise(
             { redirectTo: '/login'}
         );

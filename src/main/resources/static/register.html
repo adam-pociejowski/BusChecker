@@ -1,106 +1,21 @@
 
-<div class="row col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1" style="margin-top: 60px;">
-    <form ng-submit="register()" autocomplete="off">
-        <div class="panel panel-default">
+<div class="row col-md-8 col-lg-offset-2" style="margin-top: 60px;">
+    <div class="row col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+        <div class="panel panel-primary">
             <div class="panel-heading">Konto</div>
             <div class="panel-body">
                 <div class="form-group">
                     <label>Nazwa użytkownika</label>
-                    <input autocomplete="off" ng-model="acc.username" type="text" class="form-control" placeholder="Nazwa użytkownika">
+                    <input autocomplete="off" ng-model="user.username" type="text" class="form-control" placeholder="Nazwa użytkownika">
                 </div>
                 <div class="form-group">
                     <label>Hasło</label>
-                    <input autocomplete="off" ng-model="acc.password" type="password" class="form-control" placeholder="Hasło">
+                    <input autocomplete="off" ng-model="user.password" type="password" class="form-control" placeholder="Hasło">
                 </div>
             </div>
         </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">Kierowca</div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="firstname">Imie</label>
-                    <input ng-model="acc.firstname" type="text" class="form-control" id="firstname" placeholder="Imie">
-                </div>
-                <div class="form-group">
-                    <label for="lastname">Nazwisko</label>
-                    <input ng-model="acc.lastname" type="text" class="form-control" id="lastname" placeholder="Nazwisko">
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">Bus</div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="busName">Nazwa busa</label>
-                    <input ng-model="acc.busName" type="text" class="form-control" id="busName" placeholder="Nazwa busa">
-                </div>
-                <div class="form-group">
-                    <label for="sideNumber">Numer boczny</label>
-                    <input ng-model="acc.sideNumber" type="text" class="form-control" id="sideNumber" placeholder="Numer boczny">
-                </div>
-                <div class="form-group">
-                    <label for="rejestrNumber">Numer Rejestracyjny</label>
-                    <input ng-model="acc.rejestrNumber" type="text" class="form-control" id="rejestrNumber" placeholder="Numer Rejestracyjny">
-                </div>
-                <div class="form-group">
-                    <label>Numer telefonu</label>
-                    <input ng-model="acc.phoneNumber" type="number" class="form-control" placeholder="Numer telefonu">
-                </div>
-                <div class="form-group">
-                    <label>Ilość miejsc</label>
-                    <input ng-model="acc.numberOfSeats" type="number" class="form-control" placeholder="Ilość miejsc">
-                </div>
-                <label>Przegląd techniczny</label>
-                <div class="form-group input-group date" data-provide="datepicker">
-                    <input ng-model="acc.technicalReviewDate" type="text" placeholder="Przegląd techniczny" class="form-control">
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
-                </div>
-                <label>Przegląd windy</label>
-                <div class="form-group input-group date" data-provide="datepicker">
-                    <input ng-model="acc.liftReviewDate" type="text" placeholder="Przegląd windy" class="form-control">
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
-                </div>
-                <label>Przegląd gaśnicy</label>
-                <div class="form-group input-group date" data-provide="datepicker">
-                    <input ng-model="acc.extinguisherReviewDate" type="text" placeholder="Przegląd gaśnicy" class="form-control">
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
-                </div>
-                <label>Przegląd tachografu</label>
-                <div class="form-group input-group date" data-provide="datepicker">
-                    <input ng-model="acc.tachographReviewDate" type="text" placeholder="Przegląd tachografu" class="form-control">
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
-                </div>
-                <label>Ubezpieczenie</label>
-                <div class="form-group input-group date" data-provide="datepicker">
-                    <input ng-model="acc.insuranceDate" type="text" placeholder="Ubezpieczenie" class="form-control">
-                    <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">Opiekuni</div>
-            <div class="panel-body">
-                <div class="panel panel-default" ng-repeat="obj in sitters">
-                    <div class="panel-heading">Opiekun</div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label>Imie</label>
-                            <input type="text"  ng-model="obj.firstname" placeholder="Imie opiekuna" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label>Nazwisko</label>
-                            <input type="text" ng-model="obj.lastname" placeholder="Nazwisko opiekuna" class="form-control"/>
-                        </div>
-                    </div>
-                </div>
-                <button style="float: right" type="button" ng-click="addSitter()" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-plus"></span></button>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="margin-bottom: 100px">Załóż konto</button>
-    </form>
+        <button type="submit" ng-click="register()" class="btn btn-primary">Załóż konto</button>
+    </div>
 </div>
+
+

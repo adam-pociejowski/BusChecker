@@ -2,13 +2,17 @@
 body {
     margin: 0 !important;
     padding: 0;
-    background-image: url(../img/background2.jpg);
+    background-image: url(../img/green_background.png);
     -moz-background-size: cover;
     -webkit-background-size: cover;
     background-size: cover;
     background-position: top center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed;
+}
+
+.btn-circle {
+    border-radius: 50%;
 }
 
 .checker-panel {

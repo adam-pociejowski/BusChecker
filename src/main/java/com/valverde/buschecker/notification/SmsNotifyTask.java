@@ -1,6 +1,5 @@
 package com.valverde.buschecker.notification;
 
-import com.valverde.buschecker.entity.BusDriver;
 import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.repository.UserRepository;
 import lombok.Getter;
@@ -25,17 +24,16 @@ public class SmsNotifyTask {
 
         Iterable<User> users = userRepository.findAll();
         for (User user : users) {
-            int notification = user.getNotificationBetweenEventDays();
             System.out.println(user.getUsername());
-            List<BusDriver> buses = user.getBuses();
-            for (BusDriver bus : buses) {
-                String phone = POLAND_NUMBER + bus.getPhoneNumber();
-                sendNotificationIfNecessary(bus.getTechnicalReviewDate(), phone, ReviewTypes.TECHNICAL, notification);
-                sendNotificationIfNecessary(bus.getTachographReviewDate(), phone, ReviewTypes.TACHOGRAPH, notification);
-                sendNotificationIfNecessary(bus.getLiftReviewDate(), phone, ReviewTypes.LIFT, notification);
-                sendNotificationIfNecessary(bus.getExtinguisherReviewDate(), phone, ReviewTypes.EXTIGUISHERY, notification);
-                sendNotificationIfNecessary(bus.getInsuranceDate(), phone, ReviewTypes.INSURANCE, notification);
-            }
+//            List<BusDriver> buses = user.getBuses();
+//            for (BusDriver bus : buses) {
+//                String phone = POLAND_NUMBER + bus.getPhoneNumber();
+//                sendNotificationIfNecessary(bus.getTechnicalReviewDate(), phone, ReviewTypes.TECHNICAL, notification);
+//                sendNotificationIfNecessary(bus.getTachographReviewDate(), phone, ReviewTypes.TACHOGRAPH, notification);
+//                sendNotificationIfNecessary(bus.getLiftReviewDate(), phone, ReviewTypes.LIFT, notification);
+//                sendNotificationIfNecessary(bus.getExtinguisherReviewDate(), phone, ReviewTypes.EXTIGUISHERY, notification);
+//                sendNotificationIfNecessary(bus.getInsuranceDate(), phone, ReviewTypes.INSURANCE, notification);
+//            }
         }
     }
 

@@ -14,7 +14,7 @@ busApp.controller('LoginController', function($scope, $http, $location, loggedUs
                 console.log("Logged username: "+response.data.username,'\nRoles: '+response.data.role);
                 loggedUser.setUsername(response.data.username);
                 loggedUser.setRoles(response.data.role);
-                $location.path('checker');
+                $location.path('manage_user/'+response.data.username);
             }
             else {
                 $location.path('login');

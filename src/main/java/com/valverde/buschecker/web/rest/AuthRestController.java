@@ -2,15 +2,9 @@ package com.valverde.buschecker.web.rest;
 
 import com.valverde.buschecker.web.dto.AuthDTO;
 import com.valverde.buschecker.web.dto.LoggedUser;
-import com.valverde.buschecker.web.dto.RegisterDTO;
-import com.valverde.buschecker.entity.BusDriver;
-import com.valverde.buschecker.entity.Sitter;
 import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.service.UserService;
-import com.valverde.buschecker.util.DateUtils;
-import com.valverde.buschecker.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,8 +25,9 @@ public class AuthRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, String>> authenticate(@RequestBody AuthDTO auth, HttpSession session) {
+    @PostMapping("/authenticate")
+    public ResponseEntity<Map<String, String>> authenticate(@RequestBody AuthDTO auth, HttpSession session)
+            throws Exception {
         User user = userService.getUser(auth.getUsername());
         if (user != null) {
             String password = user.getPassword();
@@ -54,7 +49,7 @@ public class AuthRestController {
         return null;
     }
 
-    @RequestMapping(value = "/loggeduser", method = RequestMethod.GET)
+    @GetMapping("/loggeduser")
     public ResponseEntity<Map<String, String>> getLoggedUser(HttpSession session) {
 
         SecurityContext context = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
@@ -71,7 +66,7 @@ public class AuthRestController {
         return null;
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @GetMapping("/logout")
     public ResponseEntity<Map<String, String>> logout(HttpSession session) {
         SecurityContext context = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
         if (context != null) {

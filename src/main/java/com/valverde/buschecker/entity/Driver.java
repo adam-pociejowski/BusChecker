@@ -28,6 +28,11 @@ public class Driver {
     private Integer notificationBefore;
 
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Bus> busses;
+    private List<Bus> buses;
+
+//    @ManyToMany(cascade=CascadeType.PERSIST)
+//    @JoinTable(name="user2driver", joinColumns=@JoinColumn(name="driver_id"),
+//            inverseJoinColumns=@JoinColumn(name="user_id"))
+//    private List<User> users;
 
 }

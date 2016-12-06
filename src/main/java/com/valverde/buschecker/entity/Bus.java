@@ -20,9 +20,7 @@ public class Bus {
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="bus2sitter", joinColumns=@JoinColumn(name="bus_id"),
-            inverseJoinColumns=@JoinColumn(name="sitter_id"))
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bus")
     private List<Sitter> sitters;
 
     private String busName;

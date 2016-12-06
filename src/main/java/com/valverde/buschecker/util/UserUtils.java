@@ -1,21 +1,22 @@
 package com.valverde.buschecker.util;
 
 import com.valverde.buschecker.entity.Driver;
-import com.valverde.buschecker.web.dto.SitterDTO;
-import com.valverde.buschecker.entity.Sitter;
+import com.valverde.buschecker.entity.User;
+import com.valverde.buschecker.web.dto.DriverDTO;
+import lombok.extern.apachecommons.CommonsLog;
 
-import java.util.List;
-
+@CommonsLog
 public class UserUtils {
 
-    public static List<Sitter> sitterDTOToEntity(List<Sitter> sitters, List<SitterDTO> dtos, Driver driver) {
-        for (SitterDTO sitterDTO : dtos) {
-            Sitter sitter = new Sitter();
-//            sitter.setBusDriver(busDriver);
-            sitter.setFirstname(sitterDTO.getFirstname());
-            sitter.setLastname(sitterDTO.getLastname());
-            sitters.add(sitter);
+    public static Driver getDriverFromUser(User user, DriverDTO driverDTO) throws Exception {
+        if (driverDTO.getBuses() == null) {
+            log.error("DriverDTO without buses list. "+driverDTO.toString());
+            throw new Exception("DriverDTO without buses list. "+driverDTO.toString());
+        } else {
+            for (Driver driver : user.getDrivers())
+                if (driver.getId().equals(driverDTO.getId()))
+                    return driver;
         }
-        return sitters;
+        return null;
     }
 }

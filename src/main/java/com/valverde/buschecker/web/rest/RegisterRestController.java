@@ -26,7 +26,7 @@ public class RegisterRestController {
         List<String> errors = new ArrayList<>();
         if (!userService.existUser(dto.getUsername())) {
             User newUser = getUserFromRegisterDTO(dto);
-            userService.saveUser(newUser);
+            userService.save(newUser);
         } else {
             String errorMessage = "Użytkownik o loginie "+dto.getUsername()+" już istnieje.";
             errors.add(errorMessage);

@@ -1,31 +1,29 @@
 
-<div xmlns:th="http://www.w3.org/1999/xhtml" ng-init="init()">
-    <div>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand">Bus Checker</a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown">Twoi kierowcy<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li ng-repeat="driver in data.drivers"><a ng-click="choseDriver(driver)">{{driver.firstname}} {{driver.lastname}}</a></li>
-                            </ul>
-                        </li>
-                        <li><a ng-click="getOtherDrivers()" data-toggle="modal" data-target="#addDriverModal">Dodaj kierowców</a></li>
-                    </ul>
-
-                    <form class="navbar-form navbar-right">
-                        <button ng-click="logout()" type="submit" class="btn btn-primary">Wyloguj się</button>
-                    </form>
-                    <p class="navbar-text navbar-right">Zalogowany jako: {{loggedUser}}</p>
-                </div>
+<div ng-init="init()" class="container">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">Bus Checker</a>
             </div>
-        </nav>
-    </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">Twoi kierowcy<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="driver in data.drivers"><a ng-click="choseDriver(driver)">{{driver.firstname}} {{driver.lastname}}</a></li>
+                        </ul>
+                    </li>
+                    <li><a ng-click="getOtherDrivers()" data-toggle="modal" data-target="#addDriverModal">Dodaj kierowców</a></li>
+                </ul>
+
+                <form class="navbar-form navbar-right">
+                    <button ng-click="logout()" type="submit" class="btn btn-primary">Wyloguj się</button>
+                </form>
+                <p class="navbar-text navbar-right">Zalogowany jako: {{loggedUser}}</p>
+            </div>
+        </div>
+    </nav>
 
     <div class="container">
         <div ng-if="data.drivers.length == 0">
@@ -35,72 +33,188 @@
             </span>
         </div>
         <div class="row col-md-10 col-md-offset-1" ng-if="data.drivers.length > 0">
-            <div class="checker-header">
-                <span class="checker-driver">Aktywny kierowca: {{chosenDriver.firstname}} {{chosenDriver.lastname}}</span>
-                <a ng-click="deleteDriverFromUser()" class="glyphicon glyphicon-remove-sign"
-                   style="font-size: 1.5em; color: red;margin-left: 30px;"></a>
+            <div class="panel panel-info">
+                <div class="panel-heading clearfix">
+                    <span class="active-driver">{{chosenDriver.firstname}} {{chosenDriver.lastname}}</span>
+                    <a ng-click="deleteDriverFromUser()" class="glyphicon glyphicon-remove-sign delete-driver pull-right"></a>
+                </div>
             </div>
 
-            <div class="checker-panel">
-                <span class="checker-panel-header">Szczegóły wozu</span>
-                <table class="table table-striped table-hover">
-                    <tbody>
-                        <tr ng-repeat="obj in infos">
-                            <td class="col-md-4">{{obj.label}}</td>
-                            <td class="col-md-7">{{obj.value}}</td>
-                            <td class="col-md-1">
-                                <button type="button" ng-click="edit(obj)" class="btn btn-primary" data-toggle="modal" data-target="#modal">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
+            <div class="panel panel-info panel-margin">
+                <div class="panel-heading panel-info clearfix busses-heading">Wozy
+                    <button ng-click="getAllBuses()" class="btn btn-info pull-right" data-toggle="modal" data-target="#addBusModal">Dodaj wóz</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <th>Nazwa wozu</th>
+                        <th>Numer rejestracyjny</th>
+                    </thead>
+                    <tr ng-repeat="bus in chosenDriver.buses" ng-click="selectBus(bus)"
+                        ng-class="{'active-bus': bus == selectedBus}">
+                        <td>{{bus.busName}}</td>
+                        <td>{{bus.registerNumber}}</td>
+                    </tr>
                 </table>
             </div>
 
-            <div class="checker-panel">
-                <span class="checker-panel-header">Przeglądy oraz ubezpieczenie</span>
-                <table class="table table-striped table-hover">
-                    <tbody>
-                    <tr ng-repeat="obj in dates">
-                        <td class="col-md-5">{{obj.label}}</td>
-                        <td class="col-md-3">
-                            <div class="form-group input-group date" data-provide="datepicker">
-                                <input ng-model="obj.value" ng-model="acc.insuranceDate" type="text" class="form-control">
-                                <div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div>
-                            </div></td>
-                        <td class="col-md-3" style="margin-left: 20px;">
-                            {{nextReview(obj)}}
-                        </td>
-                        <td class="col-md-1">
-                            <button type="button" ng-click="save()" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                            </button>
+            <div class="panel panel-info panel-margin">
+                <div class="panel-heading panel-info busses-heading">Szczegóły wozu</div>
+                <table class="table">
+                    <tr>
+                        <td class="row col-md-7">Nazwa wozu</td>
+                        <td class="row col-md-5">
+                            <input ng-model="selectedBus.busName" class="form-control" type="text" />
                         </td>
                     </tr>
-                    </tbody>
+                    <tr>
+                        <td>Numer rejestracyjny</td>
+                        <td><input ng-model="selectedBus.sideNumber" class="form-control" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Numer wozu</td>
+                        <td><input ng-model="selectedBus.registerNumber" class="form-control" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ilość miejsc</td>
+                        <td><input ng-model="selectedBus.numberOfSeats" class="form-control" type="number"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ostatni przegląd techniczny</td>
+                        <td><input ng-model="selectedBus.technicalReviewDate" class="form-control" type="date"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ostatni przegląd windy</td>
+                        <td><input ng-model="selectedBus.liftReviewDate" class="form-control" type="date"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ostatni przegląd tachografu</td>
+                        <td><input ng-model="selectedBus.tachographReviewDate" class="form-control" type="date"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ostatni przegląd gaśnicy</td>
+                        <td><input ng-model="selectedBus.extinguisherReviewDate" class="form-control" type="date"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ubezpieczenie</td>
+                        <td><input ng-model="selectedBus.insuranceDate" class="form-control" type="date"/></td>
+                    </tr>
                 </table>
             </div>
 
-            <div class="checker-panel">
-                <span class="checker-panel-header">Opiekunowie</span>
-                <table class="table table-striped table-hover">
-                    <tbody>
-                        <tr ng-repeat="obj in sitters">
-                            <td class="col-md-11">{{obj.value}}</td>
-                            <td class="col-md-1">
-                                <button type="button" ng-click="editSitter(obj)" class="btn btn-primary" data-toggle="modal" data-target="#modal">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
+            <div class="panel panel-info panel-margin">
+                <div class="panel-heading panel-info clearfix busses-heading">Opiekuni
+                    <button ng-click="editSitter(null)" class="btn btn-info pull-right" data-toggle="modal" data-target="#editSitterModal">Dodaj opiekuna</button>
+                </div>
+                <table class="table">
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <tr ng-repeat="sitter in selectedBus.sitters">
+                        <td>{{sitter.firstname}}</td>
+                        <td>{{sitter.lastname}}</td>
+                        <td ng-click="editSitter(sitter)"></td>
+                    </tr>
                 </table>
+            </div>
+
+            <div class="row">
+                <button ng-click="saveUserData()" class="btn btn-success btn-lg pull-right">Zapisz</button>
             </div>
         </div>
     </div>
 
-    <div style="margin-top: 150px;" class="modal fade" id="addDriverModal" tabindex="-1" role="dialog">
+    <!-- Adding new bus (modal) -->
+    <div id="addBusModal" class="modal fade modal-top-margin" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Dodawanie wozów do kierowcy: {{chosenDriver.firstname}} {{chosenDriver.lastname}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-repeat="bus in buses">
+                        <md-checkbox ng-model="bus.chosen">{{bus.busName}}</md-checkbox>
+                    </div>
+                    <button ng-click="setAddingElement(true)" class="btn btn-primary">Dodaj nowy wóz</button>
+                    <div ng-if="addingElement == true">
+                        <table class="new-driver-table">
+                            <tr>
+                                <td class="new-driver-table-row">
+                                    <div class="form-group">
+                                        <div>Nazwa wozu</div>
+                                        <input ng-model="newElement.busName" type="text" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Numer wozu</div>
+                                        <input ng-model="newElement.sideNumber" type="text" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Numer rejestracyjny</div>
+                                        <input ng-model="newElement.registerNumber" type="text" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Ilość miejsc</div>
+                                        <input ng-model="newElement.numberOfSeats" type="number" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Ostatni przegląd techniczny</div>
+                                        <input ng-model="newElement.technicalReviewDate" class="form-control" type="date" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Ostatni przegląd windy</div>
+                                        <input ng-model="newElement.liftReviewDate" class="form-control" type="date" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Ostatni przegląd gaśnicy</div>
+                                        <input ng-model="newElement.extinguisherReviewDate" class="form-control" type="date" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Ostatni przegląd tachografu</div>
+                                        <input ng-model="newElement.tachographReviewDate" class="form-control" type="date" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Data ubezpieczenia wozu</div>
+                                        <input ng-model="newElement.insuranceDate" class="form-control" type="date" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-info" ng-click="addNewBus()">Dodaj wóz</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" ng-click="clear()" data-dismiss="modal">Anuluj</button>
+                    <button class="btn btn-primary" ng-click="saveChosenDriver()" data-dismiss="modal">Zapisz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adding new driver (modal) -->
+    <div id="addDriverModal" class="modal fade modal-top-margin" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -109,27 +223,28 @@
                 </div>
                 <div class="modal-body">
                     <div>Zaznacz kierowców, których chcesz dodać z listy lub dodaj nowego:</div>
-                    <div ng-if="addingNewDriver == false">
-                        <div ng-repeat="driver in otherDrivers" style="margin: 10px;">
-                            <input ng-model="driver.chosen" type="checkbox" />
-                            <span style="margin-left: 10px;">{{driver.firstname}} {{driver.lastname}}</span>
+                    <div ng-if="addingElement == false">
+                        <div ng-repeat="driver in otherDrivers" class="drivers-list">
+                            <md-checkbox ng-model="driver.chosen">
+                                {{driver.firstname}} {{driver.lastname}}
+                            </md-checkbox>
                         </div>
-                        <button ng-click="setAddingDriver(true)" class="btn btn-success btn-circle btn-lg glyphicon glyphicon-plus"></button>
+                        <button ng-click="setAddingElement(true)" class="btn btn-success btn-circle btn-lg glyphicon glyphicon-plus"></button>
                     </div>
 
-                    <div ng-if="addingNewDriver == true">
-                        <table style="margin-top: 20px;">
+                    <div ng-if="addingElement == true">
+                        <table class="new-driver-table">
                             <tr>
-                                <td style="padding-right: 20px;">
+                                <td class="new-driver-table-row">
                                     <div class="form-group">
                                         <div>Imię</div>
-                                        <input ng-model="newDriver.firstname" type="text" />
+                                        <input ng-model="newElement.firstname" type="text" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="form-group">
                                         <div>Nazwisko</div>
-                                        <input ng-model="newDriver.lastname" type="text" />
+                                        <input ng-model="newElement.lastname" type="text" />
                                     </div>
                                 </td>
                             </tr>
@@ -137,13 +252,13 @@
                                 <td>
                                     <div class="form-group">
                                         <div>Telefon</div>
-                                        <input ng-model="newDriver.phoneNumber" type="number" />
+                                        <input ng-model="newElement.phoneNumber" type="number" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="form-group">
                                         <div>Email</div>
-                                        <input ng-model="newDriver.email" type="email" />
+                                        <input ng-model="newElement.email" type="email" />
                                     </div>
                                 </td>
                             </tr>
@@ -151,37 +266,44 @@
                                 <td>
                                     <div class="form-group">
                                         <div>Powiadomienie dni wczęśniej</div>
-                                        <input ng-init="newDriver.notificationBefore=14" ng-model="newDriver.notificationBefore" type="number" />
+                                        <input ng-init="newElement.notificationBefore=14" ng-model="newElement.notificationBefore" type="number" />
                                     </div>
                                 </td>
                             </tr>
                         </table>
-                        <input type="hidden" ng-init="newDriver.chosen=true" />
+                        <input type="hidden" ng-init="newElement.chosen=true" />
                         <button ng-click="addNewDriver()" class="btn btn-primary">Dodaj kierowcę</button>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" ng-click="clearNewDriver()" data-dismiss="modal">Anuluj</button>
-                    <button type="button" class="btn btn-primary" ng-click="saveDrivers()" data-dismiss="modal">Zapisz</button>
+                    <button class="btn btn-info" ng-click="clear()" data-dismiss="modal">Anuluj</button>
+                    <button class="btn btn-primary" ng-click="saveDrivers()" data-dismiss="modal">Zapisz</button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div style="margin-top: 150px;" class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <!-- Adding new sitter (modal) -->
+    <div id="editSitterModal" class="modal fade modal-top-margin" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-primary">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Ustaw wartość pola: '{{editingObj.label}}'</h4>
+                    <h4 class="modal-title">Nowy opiekun</h4>
                 </div>
                 <div class="modal-body">
-                    <input class="col-md-12" type="text" id="modalInput" ng-model="modalInput"/>
+                    <div class="form-group">
+                        <div>Imię</div>
+                        <input type="text" ng-model="newElement.firstname"/>
+                    </div>
+                    <div class="form-group">
+                        <div>Nazwisko</div>
+                        <input type="text" ng-model="newElement.lastname"/>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
-                    <button type="button" class="btn btn-primary" ng-click="save()" data-dismiss="modal">Zapisz</button>
+                    <button type="button" class="btn btn-info" ng-click="clear()" data-dismiss="modal">Anuluj</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveSitter()" data-dismiss="modal">Zapisz</button>
                 </div>
             </div>
         </div>

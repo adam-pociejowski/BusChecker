@@ -11,9 +11,9 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-class BusDTO {
+public class BusDTO {
 
-    private List<SitterDTO> sitters;
+    private Long id;
 
     private String busName;
 
@@ -33,8 +33,13 @@ class BusDTO {
 
     private Date insuranceDate;
 
+    private Boolean chosen;
 
-    BusDTO(Bus bus) {
+    private List<SitterDTO> sitters;
+
+
+    public BusDTO(Bus bus) {
+        this.id = bus.getId();
         this.busName = bus.getBusName();
         this.sideNumber = bus.getSideNumber();
         this.registerNumber = bus.getRegisterNumber();
@@ -42,10 +47,11 @@ class BusDTO {
         this.technicalReviewDate = bus.getTechnicalReviewDate();
         this.liftReviewDate = bus.getLiftReviewDate();
         this.extinguisherReviewDate = bus.getExtinguisherReviewDate();
-        this.technicalReviewDate = bus.getTechnicalReviewDate();
+        this.tachographReviewDate = bus.getTachographReviewDate();
         this.insuranceDate = bus.getInsuranceDate();
         this.sitters = new ArrayList<>();
         for (Sitter sitter : bus.getSitters())
             sitters.add(new SitterDTO(sitter));
+        chosen = false;
     }
 }

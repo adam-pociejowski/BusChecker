@@ -3,6 +3,7 @@ package com.valverde.buschecker.entity;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")

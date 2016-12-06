@@ -28,7 +28,7 @@ public class AuthRestController {
     @PostMapping("/authenticate")
     public ResponseEntity<Map<String, String>> authenticate(@RequestBody AuthDTO auth, HttpSession session)
             throws Exception {
-        User user = userService.getUser(auth.getUsername());
+        User user = userService.getUserByUsername(auth.getUsername());
         if (user != null) {
             String password = user.getPassword();
             if (password.equals(auth.getPassword())) {

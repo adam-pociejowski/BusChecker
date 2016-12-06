@@ -1,5 +1,6 @@
 
-var busApp = angular.module('BusChecker', ['ngAnimate', 'ui.bootstrap', 'ngResource', 'ngRoute'])
+var busApp = angular.module('BusChecker', ['ngAnimate', 'ui.bootstrap', 'ngResource', 'ngRoute',
+    'ngMaterial'])
     .config(function ($routeProvider, $httpProvider) {
         $routeProvider.when('/login', {
             templateUrl : 'login.html',

@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class DriverDTO {
 
+    private Long id;
+
     private String firstname;
 
     private String lastname;
@@ -21,19 +23,20 @@ public class DriverDTO {
 
     private Integer notificationBefore;
 
-    private List<BusDTO> busses;
+    private List<BusDTO> buses;
 
     private Boolean chosen;
 
     public DriverDTO(Driver driver) {
+        this.id = driver.getId();
         this.firstname = driver.getFirstname();
         this.lastname = driver.getLastname();
         this.phoneNumber = driver.getPhoneNumber();
         this.email = driver.getEmail();
         this.notificationBefore = driver.getNotificationBefore();
         this.chosen = false;
-        busses = new ArrayList<>();
-        for (Bus bus : driver.getBusses())
-            busses.add(new BusDTO(bus));
+        buses = new ArrayList<>();
+        for (Bus bus : driver.getBuses())
+            buses.add(new BusDTO(bus));
     }
 }

@@ -1,28 +1,24 @@
 package com.valverde.buschecker.service;
 
+import com.valverde.buschecker.entity.Bus;
 import com.valverde.buschecker.entity.Driver;
 import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.repository.DriverRepository;
+import com.valverde.buschecker.util.BusUtils;
+import com.valverde.buschecker.web.dto.BusDTO;
 import com.valverde.buschecker.web.dto.DriverDTO;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @CommonsLog
-@Transactional
 public class DriverService {
 
     @Autowired
     private DriverRepository driverRepository;
-
-    public void saveNewDriver(DriverDTO driverDTO) throws Exception {
-        Driver newDriver = convertToDriver(driverDTO);
-        driverRepository.save(newDriver);
-    }
 
     Driver getDriverFromDTO(DriverDTO dto) {
         return driverRepository.findByFirstnameAndLastname(dto.getFirstname(), dto.getLastname());
@@ -48,13 +44,33 @@ public class DriverService {
         return drivers;
     }
 
-    private Driver convertToDriver(DriverDTO driverDTO) {
-        Driver newDriver = new Driver();
-        newDriver.setFirstname(driverDTO.getFirstname());
-        newDriver.setLastname(driverDTO.getLastname());
-        newDriver.setEmail(driverDTO.getEmail());
-        newDriver.setNotificationBefore(driverDTO.getNotificationBefore());
-        newDriver.setPhoneNumber(driverDTO.getPhoneNumber());
-        return newDriver;
+    void setFieldsOnDriver(Driver driver, DriverDTO driverDTO) {
+        driver.setFirstname(driverDTO.getFirstname());
+        driver.setLastname(driverDTO.getLastname());
+        driver.setEmail(driverDTO.getEmail());
+        driver.setNotificationBefore(driverDTO.getNotificationBefore());
+        driver.setPhoneNumber(driverDTO.getPhoneNumber());
+    }
+
+    void setBusesToDriver(Driver driver, DriverDTO driverDTO) {
+        for (BusDTO busDTO : driverDTO.getBuses()) {
+            Bus bus = getBusFromDriver(driver, busDTO);
+            if (bus == null) {
+                bus = new Bus();
+                bus.setDriver(driver);
+                List<Bus> buses = driver.getBuses();
+                buses.add(bus);
+            }
+            BusUtils.setFieldsToBus(bus, busDTO);
+            BusUtils.updateSittersInBus(bus, busDTO);
+        }
+    }
+
+    private Bus getBusFromDriver(Driver driver, BusDTO busDTO) {
+        for (Bus bus : driver.getBuses())
+            if (bus.getId().equals(busDTO.getId()))
+                return bus;
+
+        return null;
     }
 }

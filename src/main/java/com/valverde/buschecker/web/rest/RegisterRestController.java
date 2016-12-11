@@ -2,7 +2,6 @@ package com.valverde.buschecker.web.rest;
 
 import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.service.UserService;
-import com.valverde.buschecker.service.UserService2;
 import com.valverde.buschecker.web.dto.RegisterDTO;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,14 @@ import java.util.List;
 public class RegisterRestController {
 
     @Autowired
-    private UserService2 userService2;
+    private UserService userService;
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     public ResponseEntity<List<String>> register(@RequestBody RegisterDTO dto) {
         List<String> errors = new ArrayList<>();
-        if (!userService2.existUser(dto.getUsername())) {
+        if (!userService.existUser(dto.getUsername())) {
             User newUser = getUserFromRegisterDTO(dto);
-            userService2.save(newUser);
+            userService.save(newUser);
         } else {
             String errorMessage = "Użytkownik o loginie "+dto.getUsername()+" już istnieje.";
             errors.add(errorMessage);

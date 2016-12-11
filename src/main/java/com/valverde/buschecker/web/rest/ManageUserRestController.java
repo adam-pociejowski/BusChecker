@@ -18,13 +18,13 @@ import java.util.List;
 public class ManageUserRestController {
 
     @Autowired
-    private UserService2 userService2;
+    private UserService userService;
 
     @Autowired
-    private DriverService2 driverService2;
+    private DriverService driverService;
 
     @Autowired
-    private BusService2 busService2;
+    private BusService busService;
 
     @Autowired
     private SitterService sitterService;
@@ -33,7 +33,7 @@ public class ManageUserRestController {
     @GetMapping("/getotherbuses/{id}")
     public ResponseEntity<Iterable<BusDTO>> getOtherBuses(@PathVariable Long id) {
         try {
-            return new ResponseEntity<>(busService2.getAllOtherBuses(id), HttpStatus.OK);
+            return new ResponseEntity<>(busService.getAllOtherBuses(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -42,7 +42,7 @@ public class ManageUserRestController {
     @GetMapping("/getotherdrivers/{username}")
     public ResponseEntity<List<DriverDTO>> getOtherDrivers(@PathVariable String username) {
         try {
-            List<DriverDTO> drivers = userService2.getOtherDrivers(username);
+            List<DriverDTO> drivers = userService.getOtherDrivers(username);
             return new ResponseEntity<>(drivers, HttpStatus.OK);
         } catch (Exception e) {
             log.error("No user with username: "+username+" found.", e);
@@ -53,7 +53,7 @@ public class ManageUserRestController {
     @GetMapping("/getuserdata/{username}")
     public ResponseEntity<UserDTO> getUserData(@PathVariable String username) {
         try {
-            User user = userService2.getUserByUsername(username);
+            User user = userService.getUserByUsername(username);
             UserDTO dto = new UserDTO(user);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Exception e) {
@@ -61,17 +61,6 @@ public class ManageUserRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-//    @PostMapping("/savebus")
-//    public HttpStatus saveBus(@RequestBody BusDTO bus) {
-//        try {
-//            busService.saveBusFromDTO(bus);
-//            return HttpStatus.OK;
-//        } catch (Exception e) {
-//            log.error("Could'n save bus: "+bus.toString(), e);
-//            return HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-//    }
 
     @PostMapping("/savesitters")
     public HttpStatus saveSitters(@RequestBody BusDTO busDTO) {
@@ -87,7 +76,7 @@ public class ManageUserRestController {
     @PostMapping("/savebuses")
     public HttpStatus saveBuses(@RequestBody DriverDTO driverDTO) {
         try {
-            busService2.updateBuses(driverDTO);
+            busService.updateBuses(driverDTO);
             return HttpStatus.OK;
         } catch (Exception e) {
             log.error("Error while saving buses to driver: "+driverDTO.toString(), e);
@@ -98,7 +87,7 @@ public class ManageUserRestController {
     @PostMapping("/savedrivers")
     public HttpStatus saveDrivers(@RequestBody UserDTO userDTO) {
         try {
-            driverService2.updateDrivers(userDTO);
+            driverService.updateDrivers(userDTO);
             return HttpStatus.OK;
         } catch (Exception e) {
             log.error("Error while saving drivers to user: "+userDTO.toString(), e);

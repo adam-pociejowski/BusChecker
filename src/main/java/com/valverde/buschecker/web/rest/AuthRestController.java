@@ -1,10 +1,9 @@
 package com.valverde.buschecker.web.rest;
 
-import com.valverde.buschecker.service.UserService2;
+import com.valverde.buschecker.service.UserService;
 import com.valverde.buschecker.web.dto.AuthDTO;
 import com.valverde.buschecker.web.dto.LoggedUser;
 import com.valverde.buschecker.entity.User;
-import com.valverde.buschecker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +23,12 @@ import java.util.*;
 public class AuthRestController {
 
     @Autowired
-    private UserService2 userService2;
+    private UserService userService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<Map<String, String>> authenticate(@RequestBody AuthDTO auth, HttpSession session)
             throws Exception {
-        User user = userService2.getUserByUsername(auth.getUsername());
+        User user = userService.getUserByUsername(auth.getUsername());
         if (user != null) {
             String password = user.getPassword();
             if (password.equals(auth.getPassword())) {

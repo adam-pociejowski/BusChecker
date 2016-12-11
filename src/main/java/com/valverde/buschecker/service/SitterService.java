@@ -22,13 +22,13 @@ public class SitterService {
     private SitterRepository sitterRepository;
 
     @Autowired
-    private BusService2 busService2;
+    private BusService busService;
 
     @Transactional
     public void updateSitters(BusDTO busDTO) {
-        Bus bus = busService2.getBus(busDTO.getId());
+        Bus bus = busService.getBus(busDTO.getId());
         updateSittersOnBus(bus, busDTO);
-        busService2.save(bus);
+        busService.save(bus);
     }
 
     private void saveRemovedSitters(List<Sitter> deletedSitters) {

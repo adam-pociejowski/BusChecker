@@ -20,8 +20,13 @@ public class User {
 
     private String password;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="user2driver", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="driver_id"))
-    private List<Driver> drivers;
+//    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name="user2driver", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="driver_id"))
+//    private List<Driver> drivers;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="user_driver",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="driver_id"))
+    private List<Driver> drivers;
 }

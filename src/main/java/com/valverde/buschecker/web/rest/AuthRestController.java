@@ -1,5 +1,6 @@
 package com.valverde.buschecker.web.rest;
 
+import com.valverde.buschecker.service.UserService2;
 import com.valverde.buschecker.web.dto.AuthDTO;
 import com.valverde.buschecker.web.dto.LoggedUser;
 import com.valverde.buschecker.entity.User;
@@ -23,12 +24,12 @@ import java.util.*;
 public class AuthRestController {
 
     @Autowired
-    private UserService userService;
+    private UserService2 userService2;
 
     @PostMapping("/authenticate")
     public ResponseEntity<Map<String, String>> authenticate(@RequestBody AuthDTO auth, HttpSession session)
             throws Exception {
-        User user = userService.getUserByUsername(auth.getUsername());
+        User user = userService2.getUserByUsername(auth.getUsername());
         if (user != null) {
             String password = user.getPassword();
             if (password.equals(auth.getPassword())) {

@@ -5,6 +5,9 @@ import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.web.dto.DriverDTO;
 import lombok.extern.apachecommons.CommonsLog;
 
+import javax.jws.soap.SOAPBinding;
+import java.util.*;
+
 @CommonsLog
 public class UserUtils {
 
@@ -18,5 +21,13 @@ public class UserUtils {
                     return driver;
         }
         return null;
+    }
+
+    public static void removeDuplicateDrivers(User user) {
+        if (user != null && user.getDrivers() != null) {
+            Set<Driver> driversSet = new HashSet<>(user.getDrivers());
+            List<Driver> driversList = new ArrayList<>(driversSet);
+            user.setDrivers(driversList);
+        }
     }
 }

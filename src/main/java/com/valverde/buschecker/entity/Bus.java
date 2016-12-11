@@ -23,10 +23,12 @@ public class Bus {
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bus")
     private List<Sitter> sitters;
 
+    @Column(unique = true)
     private String busName;
 
     private String sideNumber;
 
+    @Column(unique = true)
     private String registerNumber;
 
     private int numberOfSeats;

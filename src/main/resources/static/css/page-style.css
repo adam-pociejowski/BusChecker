@@ -12,7 +12,7 @@
 }
 
 .container {
-    padding-top: 100px;
+    padding-top: 60px;
 }
 
 .panel-margin {
@@ -61,6 +61,17 @@
     margin-left: 30px;
 }
 
+.edit {
+    font-size: 1.5em;
+    color: #002a80;
+    margin-left: 30px;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #2aabd2;
+}
+
 .margin-left {
     margin-left: 20px;
 }
@@ -89,4 +100,8 @@
 .busses-heading {
     font-size: 22px;
     font-weight: bold;
+}
+
+.sitter-modal {
+    width: 300px;
 }

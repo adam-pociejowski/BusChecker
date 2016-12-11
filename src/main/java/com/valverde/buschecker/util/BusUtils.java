@@ -1,13 +1,13 @@
 package com.valverde.buschecker.util;
 
 import com.valverde.buschecker.entity.Bus;
+import com.valverde.buschecker.entity.Driver;
 import com.valverde.buschecker.entity.Sitter;
+import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.web.dto.BusDTO;
 import com.valverde.buschecker.web.dto.SitterDTO;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class BusUtils {
 
@@ -38,6 +38,14 @@ public class BusUtils {
 
         List<Sitter> sitters = bus.getSitters();
         sitters.addAll(newSitters);
+    }
+
+    public static void removeDuplicateSitters(Bus bus) {
+        if (bus != null) {
+            Set<Sitter> sitterSet = new HashSet<>(bus.getSitters());
+            List<Sitter> sittersList = new ArrayList<>(sitterSet);
+            bus.setSitters(sittersList);
+        }
     }
 
     private static void removeDeletedSittersFromBus(Bus bus, BusDTO busDTO) {

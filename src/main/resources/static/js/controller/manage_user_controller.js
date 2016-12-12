@@ -35,6 +35,7 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
 
     $scope.choseDriver = function (driver) {
         $scope.chosenDriver = driver;
+        chooseSelectedFields();
     };
 
     /**
@@ -80,7 +81,9 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
     };
 
     $scope.saveSitters = function () {
-        $scope.selectedBus.sitters.push($scope.newElement);
+        if ($scope.newElement.firstname !== undefined) {
+            $scope.selectedBus.sitters.push($scope.newElement);
+        }
         $scope.clear();
         postSitters();
     };
@@ -121,8 +124,9 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
 
     var chooseSelectedFields = function () {
         if ($scope.data.drivers.length > 0) {
-            $scope.chosenDriver = $scope.data.drivers[0];
-            console.log($scope.chosenDriver);
+            if (!isChosenDriverInList())
+                $scope.chosenDriver = $scope.data.drivers[0];
+
             if ($scope.chosenDriver.buses.length > 0) {
                 $scope.selectedBus = $scope.chosenDriver.buses[0];
                 changeDateFormat($scope.selectedBus);
@@ -158,5 +162,17 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
         then(function() {
             $scope.init();
         });
+    };
+
+    var isChosenDriverInList = function() {
+        if ($scope.chosenDriver === undefined)
+            return false;
+
+        for (var i = 0; i < $scope.data.drivers.length; i++) {
+            var driver = $scope.data.drivers[i];
+            if ($scope.chosenDriver.id === driver.id)
+                return true;
+        }
+        return false;
     };
 });

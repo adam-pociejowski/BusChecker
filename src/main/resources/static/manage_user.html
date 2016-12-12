@@ -1,127 +1,125 @@
 
 <div ng-init="init()" class="container">
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <div id="custom-bootstrap-menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand">Bus Checker</a>
+            <div class="navbar-header"><a class="navbar-brand" href="#">BusChecker</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span
+                        class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
             </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
+            <div class="collapse navbar-collapse navbar-menubuilder">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a>Zarządzaj</a></li>
+                    <li><a ng-click="getOtherDrivers()" data-toggle="modal" data-target="#addDriverModal">Dodaj kierowców</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">Twoi kierowcy<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li ng-repeat="driver in data.drivers"><a ng-click="choseDriver(driver)">{{driver.firstname}} {{driver.lastname}}</a></li>
                         </ul>
                     </li>
-                    <li><a ng-click="getOtherDrivers()" data-toggle="modal" data-target="#addDriverModal">Dodaj kierowców</a></li>
                 </ul>
-
-                <form class="navbar-form navbar-right">
-                    <button ng-click="logout()" type="submit" class="btn btn-primary">Wyloguj się</button>
-                </form>
-                <p class="navbar-text navbar-right">Zalogowany jako: {{loggedUser}}</p>
+                <ul class="nav navbar-nav navbar-right">
+                    <span style="color: white" class="navbar-text">Zalogowany jako: </span>
+                    <li><a>Wyloguj</a></li>
+                </ul>
             </div>
         </div>
-    </nav>
+    </div>
 
     <div class="container">
-        <div ng-if="data.drivers.length == 0">
-            <span>
-                Nie masz dodanych jeszcze żadnych kierowców, możesz to zrobić
-                wybierając z menu -> Kierowcy -> Dodaj kierowcę
-            </span>
+        <div ng-if="data.drivers.length == 0" class="empty-message">
+            <div>Nie masz dodanych jeszcze żadnych kierowców, możesz to zrobić</div>
+            <div>wybierając z menu -> Dodaj kierowców</div>
         </div>
         <div class="row col-md-10 col-md-offset-1" ng-if="data.drivers.length > 0">
-            <div class="panel panel-info">
+            <div class="panel panel-primary">
                 <div class="panel-heading clearfix">
                     <span class="active-driver">{{chosenDriver.firstname}} {{chosenDriver.lastname}}</span>
-                    <a ng-click="deleteDriverFromUser()" class="glyphicon glyphicon-remove-sign delete-driver pull-right"></a>
+                    <button ng-click="deleteDriverFromUser()" class="btn btn-danger glyphicon glyphicon-remove pull-right"></button>
                 </div>
             </div>
 
-            <div class="panel panel-info panel-margin">
-                <div class="panel-heading panel-info clearfix busses-heading">Wozy
-                    <button ng-click="getAllBuses()" class="btn btn-info glyphicon glyphicon-plus pull-right" data-toggle="modal" data-target="#addBusModal"></button>
-                </div>
-                <table class="table">
-                    <thead>
-                        <th>Nazwa wozu</th>
-                        <th>Numer rejestracyjny</th>
-                    </thead>
-                    <tr ng-repeat="bus in chosenDriver.buses" ng-click="selectBus(bus)"
-                        ng-class="{'active-bus': bus == selectedBus}">
-                        <td>{{bus.busName}}</td>
-                        <td>{{bus.registerNumber}}</td>
-                        <td><a ng-click="deleteBusFromUser(bus)" class="glyphicon glyphicon-remove-sign delete-driver pull-right"></a></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="panel panel-info panel-margin">
-                <div class="panel-heading panel-info clearfix busses-heading">Szczegóły wozu
-                    <button ng-click="saveBuses()" class="btn btn-info glyphicon glyphicon-save pull-right"></button>
-                </div>
-                <table class="table">
-                    <tr>
-                        <td class="row col-md-7">Nazwa wozu</td>
-                        <td class="row col-md-5">
-                            <input ng-model="selectedBus.busName" class="form-control" type="text" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Numer rejestracyjny</td>
-                        <td><input ng-model="selectedBus.sideNumber" class="form-control" type="text"/></td>
-                    </tr>
-                    <tr>
-                        <td>Numer wozu</td>
-                        <td><input ng-model="selectedBus.registerNumber" class="form-control" type="text"/></td>
-                    </tr>
-                    <tr>
-                        <td>Ilość miejsc</td>
-                        <td><input ng-model="selectedBus.numberOfSeats" class="form-control" type="number"/></td>
-                    </tr>
-                    <tr>
-                        <td>Ostatni przegląd techniczny</td>
-                        <td><input ng-model="selectedBus.technicalReviewDate" class="form-control" type="date"/></td>
-                    </tr>
-                    <tr>
-                        <td>Ostatni przegląd windy</td>
-                        <td><input ng-model="selectedBus.liftReviewDate" class="form-control" type="date"/></td>
-                    </tr>
-                    <tr>
-                        <td>Ostatni przegląd tachografu</td>
-                        <td><input ng-model="selectedBus.tachographReviewDate" class="form-control" type="date"/></td>
-                    </tr>
-                    <tr>
-                        <td>Ostatni przegląd gaśnicy</td>
-                        <td><input ng-model="selectedBus.extinguisherReviewDate" class="form-control" type="date"/></td>
-                    </tr>
-                    <tr>
-                        <td>Ubezpieczenie</td>
-                        <td><input ng-model="selectedBus.insuranceDate" class="form-control" type="date"/></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="panel panel-info panel-margin">
-                <div class="panel-heading panel-info clearfix busses-heading">Opiekuni
-                    <div class="pull-right">
-                        <button class="btn btn-info glyphicon glyphicon-plus" data-toggle="modal" data-target="#editSitterModal"></button>
-                        <button ng-click="saveSitters()" class="btn btn-info glyphicon glyphicon-save" data-toggle="modal" data-target="#editSitterModal"></button>
+            <div style="width: 50%">
+                <div class="panel panel-primary panel-margin">
+                    <div class="panel-heading panel-info clearfix busses-heading">Wybierz wóz
+                        <div class="pull-right">
+                            <button ng-click="getAllBuses()" class="btn btn-success glyphicon glyphicon-plus" data-toggle="modal" data-target="#addBusModal"></button>
+                            <button ng-click="saveBuses()" class="btn btn-info glyphicon glyphicon-save"></button>
+                            <button ng-click="deleteBusFromUser()" class="btn btn-danger glyphicon glyphicon-remove"></button>
+                        </div>
+                    </div>
+                    <div>
+                        <select class="bus-select" ng-options="opt.busName for opt in chosenDriver.buses" ng-model="selectedBus"></select>
                     </div>
                 </div>
-                <table class="table">
-                    <th>Imię</th>
-                    <th>Nazwisko</th>
-                    <tr ng-repeat="sitter in selectedBus.sitters">
-                        <td class="col-md-5"><input ng-model="sitter.firstname" class="form-control" type="text"/></td>
-                        <td class="col-md-6"><input ng-model="sitter.lastname" class="form-control" type="text"/></td>
-                        <td class="col-md-1">
-                            <a ng-click="deleteSitterFromBus(sitter)" class="glyphicon glyphicon-remove-sign delete-driver pull-right"></a>
-                        </td>
-                    </tr>
-                </table>
+            </div>
+
+            <div ng-if="selectedBus">
+                <div class="panel panel-primary panel-margin">
+                    <div class="panel-heading panel-info clearfix busses-heading">Szczegóły wozu
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td class="row col-md-7">Nazwa wozu</td>
+                            <td class="row col-md-5">
+                                <input ng-model="selectedBus.busName" class="form-control" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Numer rejestracyjny</td>
+                            <td><input ng-model="selectedBus.sideNumber" class="form-control" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>Numer wozu</td>
+                            <td><input ng-model="selectedBus.registerNumber" class="form-control" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>Ilość miejsc</td>
+                            <td><input ng-model="selectedBus.numberOfSeats" class="form-control" type="number"/></td>
+                        </tr>
+                        <tr>
+                            <td>Ostatni przegląd techniczny</td>
+                            <td><input ng-model="selectedBus.technicalReviewDate" class="form-control" type="date"/></td>
+                        </tr>
+                        <tr>
+                            <td>Ostatni przegląd windy</td>
+                            <td><input ng-model="selectedBus.liftReviewDate" class="form-control" type="date"/></td>
+                        </tr>
+                        <tr>
+                            <td>Ostatni przegląd tachografu</td>
+                            <td><input ng-model="selectedBus.tachographReviewDate" class="form-control" type="date"/></td>
+                        </tr>
+                        <tr>
+                            <td>Ostatni przegląd gaśnicy</td>
+                            <td><input ng-model="selectedBus.extinguisherReviewDate" class="form-control" type="date"/></td>
+                        </tr>
+                        <tr>
+                            <td>Ubezpieczenie</td>
+                            <td><input ng-model="selectedBus.insuranceDate" class="form-control" type="date"/></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="panel panel-primary panel-margin">
+                    <div class="panel-heading clearfix busses-heading">Opiekuni
+                        <div class="pull-right">
+                            <button class="btn btn-success glyphicon glyphicon-plus" data-toggle="modal" data-target="#editSitterModal"></button>
+                            <button ng-click="saveSitters()" class="btn btn-info glyphicon glyphicon-save"></button>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <tr ng-repeat="sitter in selectedBus.sitters">
+                            <td class="col-md-5"><input ng-model="sitter.firstname" class="form-control" type="text"/></td>
+                            <td class="col-md-6"><input ng-model="sitter.lastname" class="form-control" type="text"/></td>
+                            <td class="col-md-1">
+                                <a ng-click="deleteSitterFromBus(sitter)" class="glyphicon glyphicon-remove-sign delete-driver pull-right"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -233,7 +231,7 @@
                                 {{driver.firstname}} {{driver.lastname}}
                             </md-checkbox>
                         </div>
-                        <button ng-click="setAddingElement(true)" class="btn btn-success btn-circle btn-lg glyphicon glyphicon-plus"></button>
+                        <button ng-click="setAddingElement(true)" class="btn btn-success">Dodaj nowego</button>
                     </div>
 
                     <div ng-if="addingElement == true">
@@ -307,7 +305,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" ng-click="clear()" data-dismiss="modal">Anuluj</button>
-                    <button type="button" class="btn btn-primary" ng-click="saveSitter()" data-dismiss="modal">Zapisz</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveSitters()" data-dismiss="modal">Zapisz</button>
                 </div>
             </div>
         </div>

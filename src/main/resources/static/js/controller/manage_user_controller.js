@@ -1,6 +1,5 @@
 
-busApp.controller('ManageUserController', function($scope, $http, $location, $routeParams) {
-    $scope.loggedUser =  $routeParams.username;
+busApp.controller('ManageUserController', function($scope, $http, $location, $rootScope) {
 
     var changeDateFormat = function(bus) {
         bus.technicalReviewDate = new Date(bus.technicalReviewDate);
@@ -35,7 +34,7 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
 
     $scope.choseDriver = function (driver) {
         $scope.chosenDriver = driver;
-        chooseSelectedFields();
+        $scope.init();
     };
 
     /**
@@ -99,7 +98,7 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
      */
     $scope.getOtherDrivers = function() {
         $scope.clear();
-        $http.get('getotherdrivers/'+$scope.loggedUser).
+        $http.get('getotherdrivers/'+$rootScope.loggedUser).
         then(function(response) {
             $scope.otherDrivers = response.data;
             console.log('dd');
@@ -135,11 +134,13 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
     };
 
     $scope.init = function () {
-        $scope.clear();
-        $http.get('getuserdata/'+$scope.loggedUser).
-        then(function(response) {
-            $scope.data = response.data;
-            chooseSelectedFields();
+        $scope.authenticate(function () {
+            $scope.clear();
+            $http.get('getuserdata/'+$scope.loggedUser).
+            then(function(response) {
+                $scope.data = response.data;
+                chooseSelectedFields();
+            });
         });
     };
 

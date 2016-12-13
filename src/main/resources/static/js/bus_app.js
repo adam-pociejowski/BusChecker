@@ -8,7 +8,7 @@ var busApp = angular.module('BusChecker', ['ngAnimate', 'ui.bootstrap', 'ngResou
         }).when('/register', {
             templateUrl : 'register.html',
             controller : 'RegisterController'
-        }).when('/manage_user/:username', {
+        }).when('/manage_user', {
             templateUrl : 'manage_user.html',
             controller : 'ManageUserController'
         }).otherwise(

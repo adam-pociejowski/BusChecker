@@ -1,34 +1,28 @@
 'use strict';
 
-var appController = busApp.controller('AppController', function($rootScope, $scope, $http, $location, loggedUser) {
+var appController = busApp.controller('AppController', function($rootScope, $scope, $http, $location) {
     $scope.alerts = [];
+    $scope.isAuthenticated = false;
     $scope.loggedUser = {};
 
-    $scope.getLoggedUser = function () {
-        $http.get('loggedUser')
-            .then(function(response) {
-                console.log(response.data);
-            });
-    };
-
-    $scope.isLogged = function() {
-        return loggedUser.hasRole();
-    };
-
-    $scope.logout = function() {
-        $http.get('logout')
-            .then(function() {
-                loggedUser.setUsername(null);
-                loggedUser.setRoles(null);
-                $location.path('login');
-        });
-    };
-
     $scope.addErrorAlert = function(message) {
-        console.log('added');
         $scope.alerts.push({
             type: error,
             msg: message
+        });
+    };
+
+    $scope.authenticate = function (callback) {
+        $http.get('user').
+        success(function (response) {
+            $scope.isAuthenticated = true;
+            $scope.loggedUser = response.name;
+            callback();
+        }).
+        error(function () {
+            $scope.isAuthenticated = false;
+            $scope.loggedUser = null;
+            $location.path('login');
         });
     };
 

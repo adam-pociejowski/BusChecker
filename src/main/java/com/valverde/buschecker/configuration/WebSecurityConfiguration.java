@@ -13,43 +13,43 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private SuccessHandler successHandler;
+    private AuthProvider authProvider;
 
     @Autowired
-    private FailureHandler failureHandler;
+    private RestEntryAuthenticationPoint restEntryAuthenticationPoint;
+
+    @Autowired
+    private AuthSuccessHandler authSuccessHandler;
+
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/**");
+        web.ignoring().antMatchers("/bootstrap-datepicker-dist/**", "/js/**", "/css/**",
+            "/angular-1.5.8/**", "/bootstrap-3.3.7-dist/**");
     }
 
-
-//    , "/bootstrap-datepicker-dist/**", "/authenticate", "/js/**", "/css/**",
-//            "/angular-1.5.8/**", "/bootstrap-3.3.7-dist/**"
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .headers().disable()
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/", "/login").permitAll()
-                .anyRequest().authenticated()
+                .exceptionHandling()
+                .authenticationEntryPoint(restEntryAuthenticationPoint)
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .successHandler(successHandler)
-                .failureHandler(failureHandler)
-                .permitAll()
+                .successHandler(authSuccessHandler)
+                .failureHandler(authFailureHandler)
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .permitAll();
+                .authorizeRequests()
+                .antMatchers("/", "/login.html", "/index.html")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("test").password("test").roles("USER");
+        auth.authenticationProvider(authProvider);
     }
 }

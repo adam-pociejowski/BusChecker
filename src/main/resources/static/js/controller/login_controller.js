@@ -1,5 +1,5 @@
 
-busApp.controller('LoginController', function($scope, $http, $location) {
+busApp.controller('LoginController', function($scope, $http, $location, AuthService) {
     $scope.credentials = {};
 
     $scope.create = function() {
@@ -7,15 +7,11 @@ busApp.controller('LoginController', function($scope, $http, $location) {
     };
 
     $scope.login = function() {
-        $http.post('login', $.param($scope.credentials), {
-            headers : {
-                "content-type" : "application/x-www-form-urlencoded"
-            }
-        }).success(function() {
-            $location.path("/manage_user");
-        }).error(function() {
-            $location.path("/login");
-            $scope.error = true;
-        })
+        var promise = AuthService.login($scope.credentials);
+        promise.success(function () {
+            $location.path('manage_user');
+        }).error(function () {
+
+        });
     };
 });

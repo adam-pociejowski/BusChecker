@@ -32,7 +32,7 @@ public class SitterService {
     }
 
     private void saveRemovedSitters(List<Sitter> deletedSitters) {
-        sitterRepository.save(deletedSitters);
+        sitterRepository.delete(deletedSitters);
     }
 
     private void updateSittersOnBus(Bus bus, BusDTO busDTO) {

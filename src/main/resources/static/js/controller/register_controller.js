@@ -2,11 +2,6 @@
 busApp.controller('RegisterController', function($scope, $http, $location) {
     $scope.user = {};
 
-    $.fn.datepicker.defaults.format = "dd/mm/yyyy";
-    $('.datepicker').datepicker({
-        startDate: '-3d'
-    });
-
     $scope.register = function() {
         var errorMessage = null;
 

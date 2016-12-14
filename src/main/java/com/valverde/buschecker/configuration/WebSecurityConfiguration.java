@@ -27,7 +27,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/bootstrap-datepicker-dist/**", "/js/**", "/css/**",
-            "/angular-1.5.8/**", "/bootstrap-3.3.7-dist/**");
+            "/angular-1.5.8/**", "/bootstrap-3.3.7-dist/**", "./templates/*");
     }
 
     @Override
@@ -38,8 +38,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restEntryAuthenticationPoint)
                 .and()
                 .formLogin()
-                .successHandler(authSuccessHandler)
-                .failureHandler(authFailureHandler)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/#/login")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/login.html", "/index.html")

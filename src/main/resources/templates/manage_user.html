@@ -10,7 +10,6 @@
             </div>
             <div class="collapse navbar-collapse navbar-menubuilder">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a>Zarządzaj</a></li>
                     <li><a ng-click="getOtherDrivers()" data-toggle="modal" data-target="#addDriverModal">Dodaj kierowców</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">Twoi kierowcy<span class="caret"></span></a>
@@ -21,7 +20,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <span style="color: white" class="navbar-text">Zalogowany jako: {{loggedUser}}</span>
-                    <li><a>Wyloguj</a></li>
+                    <li><a ng-click="logout()">Wyloguj</a></li>
                 </ul>
             </div>
         </div>
@@ -225,7 +224,7 @@
                     <h4 class="modal-title">Dodawanie kierowców</h4>
                 </div>
                 <div class="modal-body">
-                    <div>Zaznacz kierowców, których chcesz dodać z listy lub dodaj nowego:</div>
+                    <div class="add-driver-message">Zaznacz kierowców, których chcesz dodać z listy lub dodaj nowego:</div>
                     <div ng-if="addingElement == false">
                         <div ng-repeat="driver in otherDrivers" class="drivers-list">
                             <md-checkbox ng-model="driver.chosen">

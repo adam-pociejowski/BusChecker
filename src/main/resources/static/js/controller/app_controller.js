@@ -1,6 +1,6 @@
 'use strict';
 
-var appController = busApp.controller('AppController', function($rootScope, $scope, $http, $location) {
+var appController = busApp.controller('AppController', function($rootScope, $scope, $http, $location, AuthService) {
     $scope.alerts = [];
     $scope.isAuthenticated = false;
     $scope.loggedUser = {};
@@ -13,16 +13,24 @@ var appController = busApp.controller('AppController', function($rootScope, $sco
     };
 
     $scope.authenticate = function (callback) {
-        $http.get('user').
-        success(function (response) {
+        var promise = AuthService.authenticate();
+        promise.success(function (response) {
             $scope.isAuthenticated = true;
             $scope.loggedUser = response.name;
             callback();
-        }).
-        error(function () {
+        }).error(function () {
             $scope.isAuthenticated = false;
             $scope.loggedUser = null;
             $location.path('login');
+        });
+    };
+
+    $scope.logout = function () {
+        var promise = AuthService.logout();
+        promise.success(function () {
+            $location.path('login');
+        }).error(function () {
+
         });
     };
 

@@ -1,5 +1,5 @@
 
-busApp.controller('ManageUserController', function($scope, $http, $location, $rootScope) {
+busApp.controller('ManageUserController', function($scope, $location, $rootScope, ManageUserService) {
 
     var changeDateFormat = function(bus) {
         bus.technicalReviewDate = new Date(bus.technicalReviewDate);
@@ -20,10 +20,6 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
     $scope.selectBus = function (bus) {
         $scope.selectedBus = bus;
         changeDateFormat($scope.selectedBus);
-    };
-
-    $scope.saveChosenDriver = function () {
-        addChosenBusesToDriver();
     };
 
     $scope.addNewBus = function() {
@@ -93,25 +89,6 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
         $scope.clear();
     };
 
-    /**
-     * Getting information
-     */
-    $scope.getOtherDrivers = function() {
-        $scope.clear();
-        $http.get('getotherdrivers/'+$rootScope.loggedUser).
-        then(function(response) {
-            $scope.otherDrivers = response.data;
-            console.log('dd');
-        });
-    };
-
-    $scope.getAllBuses = function() {
-        $http.get('getotherbuses/'+$scope.chosenDriver.id).
-        then(function(response) {
-            $scope.buses = response.data;
-        });
-    };
-
     $scope.setAddingElement = function (value) {
         $scope.addingElement = value;
     };
@@ -136,32 +113,59 @@ busApp.controller('ManageUserController', function($scope, $http, $location, $ro
     $scope.init = function () {
         $scope.authenticate(function () {
             $scope.clear();
-            $http.get('getuserdata/'+$scope.loggedUser).
-            then(function(response) {
-                $scope.data = response.data;
+            var promise = ManageUserService.getUserData($scope.loggedUser);
+            promise.success(function (response) {
+                $scope.data = response;
                 chooseSelectedFields();
+            }).error(function () {
+
             });
         });
     };
 
+    $scope.getOtherDrivers = function() {
+        $scope.clear();
+        var promise = ManageUserService.getOtherDrivers($scope.loggedUser);
+        promise.success(function (response) {
+            $scope.otherDrivers = response;
+        }).error(function () {
+
+        });
+    };
+
+    $scope.getAllBuses = function() {
+        var promise = ManageUserService.getOtherBuses($scope.chosenDriver.id);
+        promise.success(function (response) {
+            $scope.buses = response;
+        }).error(function () {
+
+        });
+    };
+
     var postSitters = function () {
-        $http.post('savesitters', $scope.selectedBus).
-        then(function() {
+        var promise = ManageUserService.saveSitters($scope.selectedBus);
+        promise.success(function () {
             $scope.init();
+        }).error(function () {
+
         });
     };
 
     var postBuses = function () {
-        $http.post('savebuses', $scope.chosenDriver).
-        then(function() {
+        var promise = ManageUserService.saveBuses($scope.chosenDriver);
+        promise.success(function () {
             $scope.init();
+        }).error(function () {
+
         });
     };
 
     var postDrivers = function () {
-        $http.post('savedrivers', $scope.data).
-        then(function() {
+        var promise = ManageUserService.saveDrivers($scope.data);
+        promise.success(function () {
             $scope.init();
+        }).error(function () {
+
         });
     };
 

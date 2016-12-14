@@ -62,6 +62,10 @@ body {
     margin: 0;
 }
 
+.add-driver-message {
+    margin-bottom: 10px;
+}
+
 .bus-select {
     font-size: 18px;
     font-weight: 600;

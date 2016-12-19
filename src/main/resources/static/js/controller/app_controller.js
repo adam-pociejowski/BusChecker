@@ -29,9 +29,19 @@ var appController = busApp.controller('AppController', function($rootScope, $sco
         var promise = AuthService.logout();
         promise.success(function () {
             $location.path('login');
+            $scope.addAlert();
         }).error(function () {
 
         });
+    };
+
+    $scope.addAlert = function () {
+        var alert = {
+            msg: "alter",
+            type: "SUCCESS"
+        };
+        console.log('added');
+        $scope.alerts.push(alert);
     };
 
     $scope.closeAlert = function(index) {

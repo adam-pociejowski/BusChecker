@@ -1,5 +1,6 @@
 
 busApp.controller('ManageUserController', function($scope, $location, $rootScope, ManageUserService) {
+    $scope.selectedDriver = {};
 
     var changeDateFormat = function(bus) {
         bus.technicalReviewDate = new Date(bus.technicalReviewDate);
@@ -42,8 +43,8 @@ busApp.controller('ManageUserController', function($scope, $location, $rootScope
         postDrivers();
     };
 
-    $scope.deleteBusFromUser = function (bus) {
-        var idx = $scope.chosenDriver.buses.indexOf(bus);
+    $scope.deleteBusFromUser = function () {
+        var idx = $scope.chosenDriver.buses.indexOf($scope.selectedBus);
         $scope.chosenDriver.buses.splice(idx, 1);
         postBuses();
     };
@@ -91,6 +92,10 @@ busApp.controller('ManageUserController', function($scope, $location, $rootScope
 
     $scope.setAddingElement = function (value) {
         $scope.addingElement = value;
+    };
+
+    $scope.selectedBus = function (bus) {
+        $scope.selectedBus = bus;
     };
 
     $scope.clear = function () {

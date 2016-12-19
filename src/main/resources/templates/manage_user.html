@@ -27,10 +27,11 @@
     </div>
 
     <div class="container">
-        <div ng-if="data.drivers.length == 0" class="empty-message">
+        <div ng-if="data.drivers.length == 0" class="alert alert-info empty-message">
             <div>Nie masz dodanych jeszcze żadnych kierowców, możesz to zrobić</div>
             <div>wybierając z menu -> Dodaj kierowców</div>
         </div>
+
         <div class="row col-md-10 col-md-offset-1" ng-if="data.drivers.length > 0">
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix">
@@ -41,24 +42,25 @@
 
             <div style="width: 50%">
                 <div class="panel panel-primary panel-margin">
-                    <div class="panel-heading panel-info clearfix busses-heading">Wybierz wóz
+                    <div class="panel-heading panel-info clearfix panel-header">Wybierz wóz
                         <div class="pull-right">
                             <button ng-click="getAllBuses()" class="btn btn-success glyphicon glyphicon-plus" data-toggle="modal" data-target="#addBusModal"></button>
                             <button ng-click="saveBuses()" class="btn btn-info glyphicon glyphicon-save"></button>
                             <button ng-click="deleteBusFromUser()" class="btn btn-danger glyphicon glyphicon-remove"></button>
                         </div>
                     </div>
-                    <div>
-                        <select class="bus-select" ng-options="opt.busName for opt in chosenDriver.buses track by opt.id"
-                                ng-model="selectedBus"></select>
-                    </div>
+                    <table class="table">
+                        <tr ng-click="selectBus(bus)" ng-repeat="bus in chosenDriver.buses"
+                            ng-class="{'active-bus': bus === selectedBus}">
+                            <td>{{bus.busName}}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 
             <div ng-if="selectedBus">
                 <div class="panel panel-primary panel-margin">
-                    <div class="panel-heading panel-info clearfix busses-heading">Szczegóły wozu
-                    </div>
+                    <div class="panel-heading panel-info clearfix panel-header">Szczegóły wozu</div>
                     <table class="table">
                         <tr>
                             <td class="row col-md-7">Nazwa wozu</td>
@@ -102,7 +104,7 @@
                 </div>
 
                 <div class="panel panel-primary panel-margin">
-                    <div class="panel-heading clearfix busses-heading">Opiekuni
+                    <div class="panel-heading clearfix panel-header">Opiekuni
                         <div class="pull-right">
                             <button class="btn btn-success glyphicon glyphicon-plus" data-toggle="modal" data-target="#editSitterModal"></button>
                             <button ng-click="saveSitters()" class="btn btn-info glyphicon glyphicon-save"></button>
@@ -119,6 +121,76 @@
                             </td>
                         </tr>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adding new driver (modal) -->
+    <div id="addDriverModal" class="modal fade modal-top-margin" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Dodawanie kierowców</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="add-driver-message">Zaznacz kierowców, których chcesz dodać z listy lub dodaj nowego:</div>
+                    <div ng-if="addingElement == false">
+                        <div ng-repeat="driver in otherDrivers" class="drivers-list">
+                            <md-checkbox ng-model="driver.chosen">
+                                {{driver.firstname}} {{driver.lastname}}
+                            </md-checkbox>
+                        </div>
+                        <button ng-click="setAddingElement(true)" class="btn btn-success">Dodaj nowego</button>
+                    </div>
+
+                    <div ng-if="addingElement == true">
+                        <table class="new-driver-table">
+                            <tr>
+                                <td class="new-driver-table-row">
+                                    <div class="form-group">
+                                        <div>Imię</div>
+                                        <input ng-model="newElement.firstname" type="text" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Nazwisko</div>
+                                        <input ng-model="newElement.lastname" type="text" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Telefon</div>
+                                        <input ng-model="newElement.phoneNumber" type="number" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Email</div>
+                                        <input ng-model="newElement.email" type="email" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div>Powiadomienie dni wczęśniej</div>
+                                        <input ng-init="newElement.notificationBefore=14" ng-model="newElement.notificationBefore" type="number" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="hidden" ng-init="newElement.chosen=true" />
+                        <button ng-click="addNewDriver()" class="btn btn-primary">Dodaj kierowcę</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" ng-click="clear()" data-dismiss="modal">Anuluj</button>
+                    <button class="btn btn-primary" ng-click="saveDrivers()" data-dismiss="modal">Zapisz</button>
                 </div>
             </div>
         </div>
@@ -215,83 +287,13 @@
         </div>
     </div>
 
-    <!-- Adding new driver (modal) -->
-    <div id="addDriverModal" class="modal fade modal-top-margin" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Dodawanie kierowców</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="add-driver-message">Zaznacz kierowców, których chcesz dodać z listy lub dodaj nowego:</div>
-                    <div ng-if="addingElement == false">
-                        <div ng-repeat="driver in otherDrivers" class="drivers-list">
-                            <md-checkbox ng-model="driver.chosen">
-                                {{driver.firstname}} {{driver.lastname}}
-                            </md-checkbox>
-                        </div>
-                        <button ng-click="setAddingElement(true)" class="btn btn-success">Dodaj nowego</button>
-                    </div>
-
-                    <div ng-if="addingElement == true">
-                        <table class="new-driver-table">
-                            <tr>
-                                <td class="new-driver-table-row">
-                                    <div class="form-group">
-                                        <div>Imię</div>
-                                        <input ng-model="newElement.firstname" type="text" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div>Nazwisko</div>
-                                        <input ng-model="newElement.lastname" type="text" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <div>Telefon</div>
-                                        <input ng-model="newElement.phoneNumber" type="number" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div>Email</div>
-                                        <input ng-model="newElement.email" type="email" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <div>Powiadomienie dni wczęśniej</div>
-                                        <input ng-init="newElement.notificationBefore=14" ng-model="newElement.notificationBefore" type="number" />
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <input type="hidden" ng-init="newElement.chosen=true" />
-                        <button ng-click="addNewDriver()" class="btn btn-primary">Dodaj kierowcę</button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-info" ng-click="clear()" data-dismiss="modal">Anuluj</button>
-                    <button class="btn btn-primary" ng-click="saveDrivers()" data-dismiss="modal">Zapisz</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Adding new sitter (modal) -->
     <div id="editSitterModal" class="modal fade modal-top-margin" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content sitter-modal">
                 <div class="modal-header bg-primary">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Nowy opiekun</h4>
+                    <h4 class="modal-title">Dodawanie nowego opiekuna</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">

@@ -7,10 +7,8 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +19,9 @@ public class RegisterRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
+    @PostMapping(value = "/registerUser")
     public ResponseEntity<List<String>> register(@RequestBody RegisterDTO dto) {
+        System.out.println("test");
         List<String> errors = new ArrayList<>();
         if (!userService.existUser(dto.getUsername())) {
             User newUser = getUserFromRegisterDTO(dto);

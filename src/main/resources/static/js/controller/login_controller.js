@@ -10,6 +10,7 @@ busApp.controller('LoginController', function($scope, $http, $location, AuthServ
         var promise = AuthService.login($scope.credentials);
         promise.success(function () {
             $location.path('manage_user');
+            $scope.addAlert();
         }).error(function () {
 
         });

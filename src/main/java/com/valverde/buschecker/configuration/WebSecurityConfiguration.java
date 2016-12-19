@@ -43,7 +43,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/#/login")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/login.html", "/index.html")
+                .antMatchers("/", "/login.html", "/index.html",
+                        "/register.html", "/registerUser", "/health/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

@@ -4,12 +4,10 @@ import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.repository.UserRepository;
 import com.valverde.buschecker.util.UserUtils;
 import com.valverde.buschecker.web.dto.DriverDTO;
-import com.valverde.buschecker.web.dto.UserDTO;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,11 +42,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateUser(UserDTO userDTO) throws Exception {
-        User user = convertToUser(userDTO);
-        userRepository.save(user);
-    }
-
     public List<DriverDTO> getOtherDrivers(String username) throws Exception {
         User user = getUserByUsername(username);
         return driverService.getOtherDriversFromUser(user);
@@ -57,18 +50,6 @@ public class UserService {
     User getUser(Long id) {
         User user = userRepository.findOne(id);
         UserUtils.removeDuplicateDrivers(user);
-        return user;
-    }
-
-    private User convertToUser(UserDTO userDTO) {
-        User user = getUser(userDTO.getId());
-        if (user == null) {
-            user = new User();
-            user.setDrivers(new ArrayList<>());
-        } else if (user.getDrivers() == null) {
-            user.setDrivers(new ArrayList<>());
-        }
-        user.setUsername(userDTO.getUsername());
         return user;
     }
 }

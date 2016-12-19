@@ -1,10 +1,10 @@
 body {
     background-color: #E3F2FD;
+    font-family: 'Lora', serif;
 }
 
 #content {
     background-color: #E3F2FD;
-    font-family: 'Lora', serif;
     font-size: 16px;
 }
 
@@ -66,6 +66,13 @@ body {
     margin-bottom: 10px;
 }
 
+.driver-select {
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #BBDEFB;
+    color: #0f0f0f;
+}
+
 .bus-select {
     font-size: 18px;
     font-weight: 600;
@@ -85,7 +92,9 @@ body {
 }
 
 .active-bus {
-    background-color: #00E676;
+    background-color: #BBDEFB;
+    font-weight: bold;
+    color: #002a80;
 }
 
 .btn-circle {
@@ -107,6 +116,10 @@ body {
 
 .margin-top {
     margin-top: 80px;
+}
+
+.login-panel {
+    min-width: 400px;
 }
 
 .checker-header {
@@ -145,6 +158,10 @@ a:hover {
     margin-top: 150px;
 }
 
+.modal-title {
+    font-weight: bold;
+}
+
 .drivers-list {
     margin: 10px;
 }
@@ -162,11 +179,12 @@ a:hover {
     font-weight: bold;
 }
 
-.busses-heading {
+.panel-header {
     font-size: 22px;
     font-weight: bold;
 }
 
 .sitter-modal {
     width: 300px;
+    margin-left: 150px;
 }

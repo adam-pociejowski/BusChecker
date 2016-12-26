@@ -1,6 +1,7 @@
 package com.valverde.buschecker.healthchecker.rest;
 
 import com.valverde.buschecker.healthchecker.dto.HealthDTO;
+import com.valverde.buschecker.healthchecker.dto.StatDTO;
 import com.valverde.buschecker.notification.sms.SmsClient;
 import com.valverde.buschecker.repository.UserRepository;
 import lombok.extern.apachecommons.CommonsLog;
@@ -22,6 +23,8 @@ public class HealthRestController {
 
     private final UserRepository userRepository;
 
+    private final static String APP_NAME = "BusChecker";
+
     @Autowired
     public HealthRestController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -30,12 +33,14 @@ public class HealthRestController {
     @GetMapping("/status")
     public ResponseEntity<HealthDTO> getHealthPoint() {
         HealthDTO healthDTO = new HealthDTO();
+        healthDTO.setAppName(APP_NAME);
         try {
-            userRepository.count();
             healthDTO.setState(HEALTHY);
+            healthDTO.getStats().add(new StatDTO("USERS_AMOUNT", userRepository.count()));
             return new ResponseEntity<>(healthDTO, HttpStatus.OK);
         } catch (Exception e) {
             healthDTO.setState(NOT_HEALTHY);
+            healthDTO.getMessages().add("Couldn't connect with datasource. "+e.toString());
             return new ResponseEntity<>(healthDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

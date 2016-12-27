@@ -39,7 +39,7 @@ public class HealthRestController {
             healthDTO.getStats().add(new StatDTO("USERS_AMOUNT", userRepository.count()));
             return new ResponseEntity<>(healthDTO, HttpStatus.OK);
         } catch (Exception e) {
-            healthDTO.setState(NOT_HEALTHY);
+            healthDTO.setState(ERROR);
             healthDTO.getMessages().add("Couldn't connect with datasource. "+e.toString());
             return new ResponseEntity<>(healthDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }

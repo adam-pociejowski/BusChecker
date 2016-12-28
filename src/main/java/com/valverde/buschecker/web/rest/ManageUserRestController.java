@@ -10,25 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @CommonsLog
 public class ManageUserRestController {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private DriverService driverService;
-
-    @Autowired
-    private BusService busService;
-
-    @Autowired
-    private SitterService sitterService;
-
 
     @GetMapping("/getotherbuses/{id}")
     public ResponseEntity<Iterable<BusDTO>> getOtherBuses(@PathVariable Long id) {
@@ -94,4 +80,21 @@ public class ManageUserRestController {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }
+
+    @Autowired
+    public ManageUserRestController(UserService userService, DriverService driverService,
+                                    BusService busService, SitterService sitterService) {
+        this.userService = userService;
+        this.driverService = driverService;
+        this.busService = busService;
+        this.sitterService = sitterService;
+    }
+
+    private final UserService userService;
+
+    private final DriverService driverService;
+
+    private final BusService busService;
+
+    private final SitterService sitterService;
 }

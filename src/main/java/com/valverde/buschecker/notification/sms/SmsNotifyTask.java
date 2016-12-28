@@ -24,7 +24,7 @@ import static com.valverde.buschecker.notification.sms.enums.ReviewType.*;
 @CommonsLog
 public class SmsNotifyTask {
 
-    private final static String SMS_TEMPLATE = "BusTracker\n";
+    private final static String SMS_TEMPLATE = "BusChecker\n";
 
     private final static Integer POLISH_MOBILE_PHONE_DIGITS_AMOUNT = 9;
 
@@ -102,41 +102,33 @@ public class SmsNotifyTask {
         }
     }
 
-    Boolean correctPhoneNumber(String phoneNumber) {
-        if (phoneNumber != null && phoneNumber.length() == POLISH_MOBILE_PHONE_DIGITS_AMOUNT)
-            return true;
-        return false;
+    private Boolean correctPhoneNumber(String phoneNumber) {
+        return phoneNumber != null && phoneNumber.length() == POLISH_MOBILE_PHONE_DIGITS_AMOUNT;
     }
 
     boolean shouldSendNotification(Date reviewDate, int monthAmount, int notification) {
-        if (reviewDate == null || monthAmount <= 0) {
+        if (reviewDate == null || monthAmount <= 0)
             return false;
-        }
+
         Calendar c = Calendar.getInstance();
         c.setTime(getNextReviewDate(reviewDate, monthAmount));
         c.add(Calendar.DATE, -1 * notification);
 
         Calendar c2 = Calendar.getInstance();
         c2.setTime(new Date());
-
-        /**
-         * Check if today is notification day
-         */
-        if ((c.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) &&
-                c.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)) {
-            return true;
-        }
-        return false;
+        /* Check if today is notification day */
+        return (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) &&
+                c.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
     }
 
-    Date getNextReviewDate(Date reviewDate, int monthAmount) {
+    private Date getNextReviewDate(Date reviewDate, int monthAmount) {
         Calendar c = Calendar.getInstance();
         c.setTime(reviewDate);
         c.add(Calendar.MONTH, monthAmount);
         return c.getTime();
     }
 
-    String getDateAsString(Date date) {
+    private String getDateAsString(Date date) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         return df.format(date);
     }

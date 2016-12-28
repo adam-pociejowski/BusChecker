@@ -12,18 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthProvider authProvider;
-
-    @Autowired
-    private RestEntryAuthenticationPoint restEntryAuthenticationPoint;
-
-    @Autowired
-    private AuthSuccessHandler authSuccessHandler;
-
-    @Autowired
-    private AuthFailureHandler authFailureHandler;
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/bootstrap-datepicker-dist/**", "/js/**", "/css/**",
@@ -54,4 +42,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider);
     }
+
+    @Autowired
+    public WebSecurityConfiguration(AuthProvider authProvider, RestEntryAuthenticationPoint restEntryAuthenticationPoint) {
+        this.authProvider = authProvider;
+        this.restEntryAuthenticationPoint = restEntryAuthenticationPoint;
+    }
+
+    private final AuthProvider authProvider;
+
+    private final RestEntryAuthenticationPoint restEntryAuthenticationPoint;
 }

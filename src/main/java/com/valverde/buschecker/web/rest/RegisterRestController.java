@@ -8,16 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @CommonsLog
 public class RegisterRestController {
-
-    @Autowired
-    private UserService userService;
 
     @PostMapping(value = "/registerUser")
     public ResponseEntity<List<String>> register(@RequestBody RegisterDTO dto) {
@@ -41,4 +37,11 @@ public class RegisterRestController {
         user.setPassword(dto.getPassword());
         return user;
     }
+
+    @Autowired
+    public RegisterRestController(UserService userService) {
+        this.userService = userService;
+    }
+
+    private final UserService userService;
 }

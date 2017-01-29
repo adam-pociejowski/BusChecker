@@ -17,6 +17,7 @@
                     <input ng-model="credentials.password" type="password" name="password"
                            class="form-control" id="password" placeholder="Hasło"/>
                 </div>
+                <div ng-if="login.error" class="alert alert-danger">Błędny login lub hasło</div>
                 <button type="submit" class="btn btn-primary">Zaloguj</button>
             </form>
 

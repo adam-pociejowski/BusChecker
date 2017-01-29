@@ -26,6 +26,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restEntryAuthenticationPoint)
                 .and()
                 .formLogin()
+                .failureHandler(authFailureHandler)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/#/login")
@@ -44,12 +45,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public WebSecurityConfiguration(AuthProvider authProvider, RestEntryAuthenticationPoint restEntryAuthenticationPoint) {
+    public WebSecurityConfiguration(AuthProvider authProvider,
+                                    RestEntryAuthenticationPoint restEntryAuthenticationPoint,
+                                    AuthFailureHandler authFailureHandler) {
         this.authProvider = authProvider;
         this.restEntryAuthenticationPoint = restEntryAuthenticationPoint;
+        this.authFailureHandler = authFailureHandler;
     }
 
     private final AuthProvider authProvider;
 
     private final RestEntryAuthenticationPoint restEntryAuthenticationPoint;
+
+    private final AuthFailureHandler authFailureHandler;
 }

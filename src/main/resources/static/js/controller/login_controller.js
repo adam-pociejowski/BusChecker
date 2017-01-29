@@ -11,8 +11,8 @@ busApp.controller('LoginController', function($scope, $http, $location, AuthServ
         promise.success(function () {
             $location.path('manage_user');
             $scope.addAlert();
-        }).error(function () {
-
+        }).error(function() {
+            $scope.login.error = true;
         });
     };
 });

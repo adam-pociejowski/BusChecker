@@ -1,4 +1,4 @@
-package com.valverde.buschecker.notification.sms.enums;
+package com.valverde.buschecker.enums;
 
 import lombok.Getter;
 

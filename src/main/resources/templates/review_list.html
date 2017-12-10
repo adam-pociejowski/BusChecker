@@ -1,0 +1,23 @@
+<div ng-init="init()" class="container">
+    <div class="panel panel-primary margin-top">
+        <div class="panel-heading panel-header">Review List</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nazwa busa</th>
+                    <th>Rodzaj przeglądu</th>
+                    <th>Data ostatniego przeglądu</th>
+                    <th>Data następnego przeglądu</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="review in reviewList">
+                    <td>{{review.busName}}</td>
+                    <td>{{review.reviewName}}</td>
+                    <td>{{review.lastReviewDate | date : 'yyyy-MM-dd'}}</td>
+                    <td>{{review.reviewDate | date : 'yyyy-MM-dd'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

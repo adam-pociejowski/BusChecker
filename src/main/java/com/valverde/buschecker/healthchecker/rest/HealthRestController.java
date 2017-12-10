@@ -2,7 +2,6 @@ package com.valverde.buschecker.healthchecker.rest;
 
 import com.valverde.buschecker.healthchecker.dto.HealthDTO;
 import com.valverde.buschecker.healthchecker.dto.StatDTO;
-import com.valverde.buschecker.notification.sms.SmsClient;
 import com.valverde.buschecker.repository.UserRepository;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,20 +42,5 @@ public class HealthRestController {
             healthDTO.getMessages().add("Couldn't connect with datasource. "+e.toString());
             return new ResponseEntity<>(healthDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @GetMapping("/sendsms")
-    public ResponseEntity<Map<String, String>> sendSmsViaApi(@RequestParam("phone") String phone,
-                                                             @RequestParam("message") String message) {
-
-        Map<String, String> response = new HashMap<>();
-        try {
-            new SmsClient().sendMessage("48"+phone, message);
-            response.put("state", SUCCESS.toString());
-        } catch (Exception e) {
-            response.put("state", ERROR.toString());
-            log.error("Problem while sending test message: "+message+" to "+phone, e);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -47,6 +47,10 @@ public class UserService {
         return driverService.getOtherDriversFromUser(user);
     }
 
+    public Iterable<User> getUsers() {
+        return userRepository.findAll();
+    }
+
     User getUser(Long id) {
         User user = userRepository.findOne(id);
         UserUtils.removeDuplicateDrivers(user);

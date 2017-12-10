@@ -19,6 +19,9 @@ busApp.factory('ManageUserService', ['$http', function ($http) {
         },
         getOtherBuses: function(driverId) {
             return $http.get('getotherbuses/'+driverId);
+        },
+        getReviewList: function (username) {
+            return $http.get('getreviewlist/'+username);
         }
     };
 }]);

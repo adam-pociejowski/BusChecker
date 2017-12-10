@@ -12,6 +12,10 @@ var appController = busApp.controller('AppController', function($rootScope, $sco
         });
     };
 
+    $scope.goToLocation = function (url) {
+        $location.path(url);
+    };
+
     $scope.authenticate = function (callback) {
         var promise = AuthService.authenticate();
         promise.success(function (response) {
@@ -28,6 +32,7 @@ var appController = busApp.controller('AppController', function($rootScope, $sco
     $scope.logout = function () {
         var promise = AuthService.logout();
         promise.success(function () {
+            $scope.isAuthenticated = false;
             $location.path('login');
             $scope.addAlert();
         }).error(function () {
@@ -40,7 +45,6 @@ var appController = busApp.controller('AppController', function($rootScope, $sco
             msg: "alter",
             type: "SUCCESS"
         };
-        console.log('added');
         $scope.alerts.push(alert);
     };
 

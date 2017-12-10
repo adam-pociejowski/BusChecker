@@ -111,6 +111,8 @@ busApp.controller('ManageUserController', function($scope, $location, $rootScope
             if ($scope.chosenDriver.buses.length > 0) {
                 $scope.selectedBus = $scope.chosenDriver.buses[0];
                 changeDateFormat($scope.selectedBus);
+            } else {
+                $scope.selectedBus = null;
             }
         }
     };

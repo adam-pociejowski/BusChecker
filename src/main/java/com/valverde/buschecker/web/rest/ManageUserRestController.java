@@ -4,6 +4,7 @@ import com.valverde.buschecker.entity.User;
 import com.valverde.buschecker.service.*;
 import com.valverde.buschecker.web.dto.BusDTO;
 import com.valverde.buschecker.web.dto.DriverDTO;
+import com.valverde.buschecker.web.dto.ReviewDTO;
 import com.valverde.buschecker.web.dto.UserDTO;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,16 @@ import java.util.List;
 @RestController
 @CommonsLog
 public class ManageUserRestController {
+
+    @GetMapping("/getreviewlist/{username}")
+    public ResponseEntity<List<ReviewDTO>> getReviewList(@PathVariable String username) {
+        try {
+            User user = userService.getUserByUsername(username);
+            return new ResponseEntity<>(reviewService.createReviewsListForUser(user), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("/getotherbuses/{id}")
     public ResponseEntity<Iterable<BusDTO>> getOtherBuses(@PathVariable Long id) {
@@ -83,11 +94,12 @@ public class ManageUserRestController {
 
     @Autowired
     public ManageUserRestController(UserService userService, DriverService driverService,
-                                    BusService busService, SitterService sitterService) {
+                                    BusService busService, SitterService sitterService, ReviewService reviewService) {
         this.userService = userService;
         this.driverService = driverService;
         this.busService = busService;
         this.sitterService = sitterService;
+        this.reviewService = reviewService;
     }
 
     private final UserService userService;
@@ -97,4 +109,6 @@ public class ManageUserRestController {
     private final BusService busService;
 
     private final SitterService sitterService;
+
+    private final ReviewService reviewService;
 }

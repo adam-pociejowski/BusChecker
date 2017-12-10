@@ -13,7 +13,6 @@ import java.security.Principal;
 @ServletComponentScan
 @RestController
 public class BusCheckerApplication {
-
 	@GetMapping("/user")
 	public Principal user(Principal user) {
 		return user;

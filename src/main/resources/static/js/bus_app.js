@@ -11,6 +11,9 @@ var busApp = angular.module('BusChecker', ['ngAnimate', 'ui.bootstrap', 'ngResou
         }).when('/manage_user', {
             templateUrl : 'manage_user.html',
             controller : 'ManageUserController'
+        }).when('/review_list', {
+            templateUrl : 'review_list.html',
+            controller : 'ReviewListController'
         }).otherwise(
             { redirectTo: '/login'}
         );

@@ -1,6 +1,6 @@
 package com.valverde.buschecker.entity;
 
-import com.valverde.buschecker.notification.enums.NotificationState;
+import com.valverde.buschecker.enums.NotificationState;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;

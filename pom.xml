@@ -109,9 +109,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<outputDirectory>/home/valverde/projects/my_libs/apps</outputDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
